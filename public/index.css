@@ -1,0 +1,447 @@
+:root {
+	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+	line-height: 1.5;
+	font-weight: 400;
+
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-text-size-adjust: 100%;
+
+	--tile-size: 40px;
+	--light-tiles: #72d0ff;
+	--dark-tiles: #4b74a3;
+	--high-light-tiles: #2417d3;
+	--check: #feec48;
+
+	--glow-color: hsl(186 100% 69%);
+}
+*,
+html::after,
+html::before {
+	margin: 0;
+	padding: 0;
+}
+
+/*================================ Splash Screen ======================================*/
+.view_container {
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+	background-color: black;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.splash_wrapper,
+.search_wrapper,
+.play_wrapper,
+.load_wrapper {
+	position: relative;
+	width: 390px;
+	height: 100%;
+	background-color: #000;
+	display: flex;
+	justify-content: center;
+}
+.splash_background {
+	width: 100%;
+	height: 100%;
+	background-image: url("/splash/splash_art.png");
+	background-size: cover !important;
+	background-repeat: no-repeat;
+}
+
+/* ===============================Game Play Componenet ==============================*/
+.player_bg {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background-image: url("/game_play/bg.png");
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+.card_over_lay {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background-image: url("/game_play/shadow.png");
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	display: flex;
+	flex-direction: column;
+
+	/* justify-content: space-around; */
+	align-items: center;
+}
+.card_over_lay > .top_sec_board {
+	height: 25%;
+	width: 100%;
+	/* background-color: red; */
+
+	/* For Laptop */
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	/* For Laptop */
+}
+.card_over_lay > .buttom_sec_board {
+	height: 50%;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.card_over_lay > .top_sec_board > .global_timer {
+	width: 100%;
+	height: 70px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	/* background-color: RED; */
+	justify-self: flex-start;
+	justify-content: space-between;
+	/* position: absolute;
+	top: 30px;
+	left: 0; */
+}
+.global_timer > .quit_game {
+	width: 30px;
+	height: 30px;
+	background-image: url("/game_play/back.png");
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	margin-left: 5px;
+	cursor: pointer;
+}
+.global_timer > .g_timer_wrapper {
+	width: 120px;
+	height: 100%;
+	background-image: url("/game_play/Time_base.png");
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+.g_timer_wrapper > .g_timer_stopwatch {
+	width: 100%;
+	height: 15px;
+	background-image: url("/game_play/stopwatch_icon.png");
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+.g_timer_wrapper > .g_timer_text {
+	margin-bottom: 5px;
+	width: 40px;
+	height: 25px;
+	font-size: 12px;
+	border: 2px solid whitesmoke;
+	border-radius: 5px;
+	color: #fffafa;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.global_timer > .sound_wrapper {
+	width: 30px;
+	height: 100%;
+	margin-right: 5px;
+	background-image: url("/game_play/sound_off.png");
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+.card_over_lay > .top_sec_board > .palyer_profile {
+	width: 100%;
+	height: 50px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-around;
+}
+.card_over_lay > .top_sec_board > .palyer_profile > .p_profile_wrapper {
+	width: 150px;
+	height: 100%;
+	position: relative;
+	background-image: url("/game_play/left_player.png");
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	margin-left: 5px;
+
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.card_over_lay > .top_sec_board > .palyer_profile > .o_profile_wrapper {
+	width: 150px;
+	height: 100%;
+	position: relative;
+	background-image: url("/game_play/Right_player.png");
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	margin-left: 5px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.card_over_lay > .top_sec_board > .palyer_profile > .vs_wrapper {
+	width: 50px;
+	height: 100%;
+	background-image: url("/game_play/VS.png");
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+.player_dp {
+	position: relative;
+}
+/* ================================ matchMaking Component =============================*/
+.search_banner_bg {
+	width: 100%;
+	height: 100%;
+	background-image: url("/match_make/BG.png");
+	background-size: cover !important;
+	background-repeat: no-repeat;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.search_banner_bg > .inner_wrapper {
+	width: 300px;
+	height: 300px;
+	margin-bottom: 60px;
+	/* background-color: wheat; */
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.match_make_player {
+	width: 100%;
+	height: 80%;
+	/* background-color: gray; */
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+}
+.match_make_player > .player_vs_op {
+	width: 70px;
+	height: 70px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-image: url("/match_making/VS.png");
+	background-size: contain !important;
+	background-repeat: no-repeat;
+	z-index: 3;
+}
+
+/* ====================================== Quit Game ===============================*/
+.quit_game_bg {
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	z-index: 1000;
+	position: absolute;
+	background-image: url("/gameQuit/layer.png");
+	background-size: cover;
+	background-repeat: no-repeat;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.quit_game_wrapper {
+	width: 350px;
+	height: 245px;
+
+	background-image: url("/gameQuit/banner.png");
+	background-size: contain;
+	background-repeat: no-repeat;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+.quit_game_text {
+	width: 250px;
+	height: 40px;
+	background-image: url("/gameQuit/do_you_want_quit.png");
+	background-size: contain;
+	background-repeat: no-repeat;
+}
+.quit_game_btn {
+	width: 60%;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+}
+
+.quit_game_btn > button {
+	display: inline-block;
+	padding: 10px 20px;
+	margin: 10px;
+	text-align: center;
+	text-decoration: none;
+	font-size: 16px;
+	border: 2px solid white;
+	border-radius: 5px;
+	color: white;
+	transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.quit_game_btn > button:hover {
+	background-color: white;
+	color: #131a50;
+	border-color: #131a50;
+}
+
+.yes {
+	background-color: #4caf50;
+}
+
+.no {
+	background-color: #ff4444;
+}
+/* ====================================== Loader Componenet Component ===============================*/
+.load_background {
+	width: 100%;
+	height: 100%;
+	background-image: url("/loader/BG.png");
+	background-repeat: no-repeat;
+	background-size: cover;
+	position: relative;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.load_background > .inner_wrapper {
+	width: 90%;
+	height: 80%;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+}
+.load_background > .inner_wrapper > .title {
+	width: 250px;
+	height: 250px;
+	background-image: url("/loader/Title_art.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+.load_background > .inner_wrapper > .loadeing_bg {
+	width: 70%;
+	height: 20px;
+	margin-bottom: 50px;
+	background-image: url("/loader/Loading_base.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+}
+.load_background > .inner_wrapper > .loadeing_bg > .loadeing_text {
+	position: absolute;
+	top: -20px;
+	left: 50%;
+	transform: translate(-50%, -10%);
+	width: 120px;
+	height: 120px;
+	background-image: url("/loader/LOADING_.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+
+/* @media (min-width: 992px) and (max-width: 1199px) {
+	.board-b72b1 {
+		width: 500px;
+	}
+	.board-b72b1 .square-55d63 {
+		width: 70px !important;
+		height: 70px !important;
+	}
+	.board-b72b1 .square-55d63 img {
+		width: 70px !important;
+		height: 70px !important;
+	}
+}
+@media (min-width: 748px) and (max-width: 991px) {
+	.board-b72b1 {
+		width: 470px !important;
+	}
+	.board-b72b1 .square-55d63 {
+		width: 50px !important;
+		height: 50px !important;
+	}
+	.board-b72b1 .square-55d63 img {
+		width: 50px !important;
+		height: 50px !important;
+	}
+} */
+
+@media only screen and (max-width: 600px) {
+	:root {
+		--tile-size: 40px;
+	}
+
+	.splash_wrapper,
+	.search_wrapper,
+	.play_wrapper,
+	.load_wrapper {
+		position: relative;
+		width: 100vw;
+		height: 100vh;
+		background-color: #000;
+		display: flex;
+		justify-content: center;
+	}
+	.splash_background {
+		width: 100%;
+		height: 100%;
+		background-image: url("/splash/splash_art.png");
+		background-size: contain !important;
+		background-repeat: no-repeat;
+	}
+
+	.load_background {
+		width: 100%;
+		height: 100%;
+		background-image: url("/loader/BG.png");
+		background-repeat: no-repeat;
+		background-size: contain !important;
+		position: relative;
+	}
+	.player_bg {
+		width: 100%;
+		height: 100%;
+		background-image: url("/game_play/bg.png");
+		background-size: contain !important;
+		background-position: center;
+		background-repeat: no-repeat;
+	}
+}
