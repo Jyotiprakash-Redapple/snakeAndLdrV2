@@ -62,153 +62,155 @@ html::before {
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
-}
-.card_over_lay {
-	position: relative;
-	width: 100%;
-	height: 100%;
-	background-image: url("/game_play/shadow.png");
-	background-size: cover;
-	background-position: center;
-	background-repeat: no-repeat;
-	display: flex;
-	flex-direction: column;
 
-	/* justify-content: space-around; */
-	align-items: center;
-}
-.card_over_lay > .top_sec_board {
-	height: 25%;
-	width: 100%;
-	/* background-color: red; */
-
-	/* For Laptop */
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	/* For Laptop */
-}
-.card_over_lay > .buttom_sec_board {
-	height: 50%;
-	width: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 }
-
-.card_over_lay > .top_sec_board > .global_timer {
+.global_timer {
 	width: 100%;
-	height: 70px;
+	height: 20px;
+
+	position: absolute;
+	top: 22px;
+	left: 0;
+
 	display: flex;
-	flex-direction: row;
 	align-items: center;
-	/* background-color: RED; */
-	justify-self: flex-start;
-	justify-content: space-between;
-	/* position: absolute;
-	top: 30px;
-	left: 0; */
+	justify-content: center;
 }
-.global_timer > .quit_game {
+.quit_game {
 	width: 30px;
 	height: 30px;
 	background-image: url("/game_play/back.png");
-	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	margin-left: 5px;
-	cursor: pointer;
+	background-size: contain;
+	position: absolute;
+	top: 70px;
+	left: 7px;
 }
-.global_timer > .g_timer_wrapper {
-	width: 120px;
-	height: 100%;
-	background-image: url("/game_play/Time_base.png");
-	background-size: contain;
+.sound_game {
+	width: 30px;
+	height: 30px;
+
 	background-position: center;
 	background-repeat: no-repeat;
+	background-size: contain;
+	position: absolute;
+	top: 70px;
+	right: 7px;
+}
+
+.sound_game.on {
+	background-image: url("/game_play/sound_on.png");
+}
+.sound_game.off {
+	background-image: url("/game_play/sound_off.png");
+}
+
+.pawn_click {
+	position: absolute;
+	width: 130px;
+	height: 70px;
+
+	bottom: -1px;
+	left: 33%;
+	transform: translate(-0%, -50%);
+
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 }
-.g_timer_wrapper > .g_timer_stopwatch {
+.pawn_click > .role {
 	width: 100%;
-	height: 15px;
-	background-image: url("/game_play/stopwatch_icon.png");
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-}
-.g_timer_wrapper > .g_timer_text {
-	margin-bottom: 5px;
-	width: 40px;
-	height: 25px;
-	font-size: 12px;
-	border: 2px solid whitesmoke;
-	border-radius: 5px;
-	color: #fffafa;
+	height: 40px;
+
 	display: flex;
-	align-items: center;
 	justify-content: center;
+	align-items: center;
 }
-.global_timer > .sound_wrapper {
-	width: 30px;
-	height: 100%;
-	margin-right: 5px;
-	background-image: url("/game_play/sound_off.png");
-	background-size: contain;
+.pawn_click > div > .role_btn {
+	width: 150px;
+	height: 30px;
+	background-image: url("/game_play/Roll.png");
 	background-position: center;
 	background-repeat: no-repeat;
+	background-size: contain;
+	transition: 1s ease-in-out;
+	cursor: pointer;
 }
-.card_over_lay > .top_sec_board > .palyer_profile {
-	width: 100%;
-	height: 50px;
+
+.pawn_click > div > .role_btn:hover {
+	transform: scale(1.4);
+}
+
+.player_bg > .inner_wrapper {
+	width: 90%;
+	height: 65%;
+
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	align-items: center;
 	justify-content: space-around;
 }
-.card_over_lay > .top_sec_board > .palyer_profile > .p_profile_wrapper {
-	width: 150px;
-	height: 100%;
-	position: relative;
-	background-image: url("/game_play/left_player.png");
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	margin-left: 5px;
+
+.player_bg > .inner_wrapper > .top_sesc {
+	width: 100%;
+	height: 60px;
 
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 }
-.card_over_lay > .top_sec_board > .palyer_profile > .o_profile_wrapper {
-	width: 150px;
+
+.player_bg > .inner_wrapper > .btm_sesc {
+	width: 100%;
+	height: 80%;
+	/* background-color: #72d0ff; */
+}
+
+.player_bg > .inner_wrapper > .top_sesc > .left_base {
 	height: 100%;
-	position: relative;
-	background-image: url("/game_play/Right_player.png");
-	background-size: contain;
-	background-position: center;
+	width: 120px;
+
+	background-image: url("/game_play/Left_base.png");
 	background-repeat: no-repeat;
-	margin-left: 5px;
+	background-size: contain;
+
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 }
-.card_over_lay > .top_sec_board > .palyer_profile > .vs_wrapper {
-	width: 50px;
-	height: 100%;
-	background-image: url("/game_play/VS.png");
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
+.player_bg > .inner_wrapper > .top_sesc > .left_base > .player_name {
+	width: 68%;
+	height: 55%;
+	background-color: red;
 }
-.player_dp {
-	position: relative;
+.player_bg > .inner_wrapper > .top_sesc > .left_base > .player_profile {
+	width: 29%;
+	height: 47%;
+	margin-bottom: 2px;
+	background-image: url("/game_play/profile_rc.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+.player_bg > .inner_wrapper > .top_sesc > .right_base {
+	height: 100%;
+	width: 120px;
+
+	background-image: url("/game_play/right_base.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+
+.player_bg > .inner_wrapper > .top_sesc > .dise_base {
+	height: 80%;
+	width: 60px;
+	background-image: url("/game_play/dise_base.png");
+	background-repeat: no-repeat;
+	background-size: contain;
 }
 /* ================================ matchMaking Component =============================*/
 .search_banner_bg {
@@ -232,7 +234,14 @@ html::before {
 	align-items: center;
 	justify-content: center;
 }
+.match_make_title {
+	width: 212px;
+	height: 90px;
+	background-repeat: no-repeat;
+	background-size: cover;
 
+	background-image: url("/match_make/Tag_base.png");
+}
 .match_make_player {
 	width: 100%;
 	height: 80%;
@@ -244,14 +253,14 @@ html::before {
 	position: relative;
 }
 .match_make_player > .player_vs_op {
-	width: 70px;
-	height: 70px;
+	width: 102px;
+	height: 249px;
 	position: absolute;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	background-image: url("/match_making/VS.png");
-	background-size: contain !important;
+	background-image: url("/match_make/V_S.png");
+	background-size: contain;
 	background-repeat: no-repeat;
 	z-index: 3;
 }

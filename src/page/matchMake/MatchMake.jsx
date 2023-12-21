@@ -20,17 +20,18 @@ function MatchMackeing() {
 
 	return (
 		<main>
-			<div className="view_container">
+			<div className='view_container'>
 				{/*<--start::match making wrapper---->*/}
-				<div className="search_wrapper">
+				<div className='search_wrapper'>
 					{/*<--start::match making wrapper bg---->*/}
-					<div className="search_banner_bg">
-						<div className="inner_wrapper">
+					<div className='search_banner_bg'>
+						<div className='inner_wrapper'>
+							<div className='match_make_title'></div>
 							{/*<--start::match making playr pic and op pic box ---->*/}
-							<div className="match_make_player">
+							<div className='match_make_player'>
 								<Player name={"text"} image={imageArray[0]} />
 								<Opponent name={"hello"} image={imageArray[0]} imageArray={imageArray} />
-								<span className="player_vs_op"></span>
+								<span className='player_vs_op'></span>
 							</div>
 							{/*<--end::match making playr pic and op pic box ---->*/}
 						</div>
