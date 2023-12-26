@@ -105,8 +105,32 @@ function PlayWithPlayer() {
 							<div className='top_sesc'>
 								<div className='left_base'>
 									<div className='player_name'>
-										<div className='name'></div>
-										<div className='turn_bar_bg'></div>
+										<div className='name'>
+											<strong
+												style={{
+													fontSize: "10px",
+												}}>
+												Jack
+											</strong>
+										</div>
+										<div className='turn_bar_bg'>
+											<div className='turn_bar_inActive_bg'>
+												<img
+													// src="/loader/loading_bar.png"
+													width={20}
+													height={30}
+													alt='loader'
+													style={{
+														// width: `${loadingWidth}%`,
+														objectFit: "cover",
+														height: "60%",
+														borderRadius: "10px",
+														marginInline: "8px",
+														marginBottom: "2px",
+													}}
+												/>
+											</div>
+										</div>
 									</div>
 									<div className='player_profile'>
 										<img

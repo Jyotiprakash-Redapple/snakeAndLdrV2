@@ -185,13 +185,28 @@ html::before {
 }
 .player_bg > .inner_wrapper > .top_sesc > .left_base > .player_name {
 	width: 68%;
-	height: 55%;
+	height: 50%;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+.player_bg > .inner_wrapper > .top_sesc > .left_base > .player_name > .name {
+	width: 100%;
+	height: 30%;
 	background-color: red;
 }
+.player_bg > .inner_wrapper > .top_sesc > .left_base > .player_name > .turn_bar_bg {
+	width: 100%;
+	height: 90%;
+	/* background-color: gainsboro; */
+}
 .player_bg > .inner_wrapper > .top_sesc > .left_base > .player_profile {
-	width: 29%;
+	width: 20%;
 	height: 47%;
 	margin-bottom: 2px;
+	margin-right: 7px;
 	background-image: url("/game_play/profile_rc.png");
 	background-repeat: no-repeat;
 	background-size: contain;
