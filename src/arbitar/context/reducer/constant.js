@@ -19,11 +19,16 @@ let initGame = {
 	status: gameStatus.pending,
 	mode: "",
 	advantage: 0,
+	turnTime: {}, // turn time | counter | life
+	gameTime: 0,
+	totalTurnTime: 0,
 };
 
 Object.freeze(initGame);
 
 let actionTypes = {
+	GET_USER_DATA: "GET_USER_DATA",
+	GET_MATCH_MAKEING_DATA: "GET_MATCH_MAKEING_DATA",
 	NEW_GAME_INIT: "NEW_GAME_INIT",
 	NEW_GAME_INIT_AI: "NEW_GAME_INIT_AI",
 	BOARD_UPDATE: "BOARD_UPDATE",
@@ -33,7 +38,6 @@ let actionTypes = {
 	NEW_GAME: "NEW_GAME",
 	GAME_MODE: "GAME_MODE",
 	STATUS: "STATUS",
-	//socket
 
 	NEW_SOCKET_CONNECTION: "NEW_SOCKET_CONNECTION",
 };

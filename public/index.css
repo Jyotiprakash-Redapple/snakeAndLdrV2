@@ -187,7 +187,7 @@ html::before {
 .player_bg > .inner_wrapper > .top_sesc > .right_base > .player_name {
 	width: 68%;
 	height: 50%;
-
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -211,8 +211,20 @@ html::before {
 	justify-content: center;
 }
 
-.player_bg > .inner_wrapper > .top_sesc > .left_base > .player_name > .turn_bar_bg > .turn_bar_inActive_bg,
-.player_bg > .inner_wrapper > .top_sesc > .right_base > .player_name > .turn_bar_bg > .turn_bar_inActive_bg {
+.player_bg
+	> .inner_wrapper
+	> .top_sesc
+	> .left_base
+	> .player_name
+	> .turn_bar_bg
+	> .turn_bar_inActive_bg,
+.player_bg
+	> .inner_wrapper
+	> .top_sesc
+	> .right_base
+	> .player_name
+	> .turn_bar_bg
+	> .turn_bar_inActive_bg {
 	width: 80%;
 	height: 7px;
 	display: flex;

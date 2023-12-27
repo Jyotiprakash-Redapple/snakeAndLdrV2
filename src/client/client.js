@@ -1,5 +1,14 @@
 import { io } from "socket.io-client";
-import { gameInit, updateBoard } from "../arbitar/context/reducer/move";
+import {
+	gameInit,
+	updateBoard,
+	getUserData,
+	getMatchMakeingData,
+	gameEnd,
+	turnTimer,
+	gameTimer,
+	turnUpdate,
+} from "../arbitar/context/reducer/move";
 class Client {
 	constructor(gameSceneInstance) {
 		this.gameSceneRefence = gameSceneInstance;
@@ -13,16 +22,9 @@ class Client {
 		});
 
 		this.soundName = null;
+		this.user_data = null;
 
 		this._initSocketListeners();
-
-		// this.getGameInitFromServer();
-		// this.ListenCurrentState();
-		// this.StartTimerFromServer();
-		// this.GetTimerFromServer();
-		// this.StartDrawFromServer();
-		// this.CurrentDrawNumberFromServer();
-		// this.StopDrawNumberFromServer();
 	}
 	create() {}
 	_initSocketListeners() {
@@ -30,6 +32,17 @@ class Client {
 		let ref = this;
 		this.socket.on("connect", (socket) => {
 			console.log("Successfully connected!");
+			this.socket.on("user-data", (arg) => {
+				this.user_data = arg;
+			});
+		});
+	}
+	getUserDataFromServer(dispatch) {
+		dispatch(getUserData(this.user_data));
+	}
+	getMatchMakeingDataFromServer(dispatch) {
+		this.socket.on("matchmacking-data", (arg) => {
+			dispatch(getMatchMakeingData(arg));
 		});
 	}
 	getGameInitFromServer(dispatch) {
@@ -44,7 +57,24 @@ class Client {
 			console.log("Game Update Details From Server", arg);
 		});
 	}
-
+	onGmaeTime(dispatch) {
+		this.socket.on("gameTimer", (arg) => {
+			dispatch(gameTimer(arg));
+			// console.log("Game Timer From Server=============>", arg);
+		});
+	}
+	onTurnTimer(dispatch) {
+		this.socket.on("turnTimer", (arg) => {
+			dispatch(turnTimer(arg));
+			// console.log("GameTurnTimer From Server===========>", arg);
+		});
+	}
+	onTurnChange(dispatch) {
+		this.socket.on("game-updateTurn", (arg) => {
+			dispatch(turnUpdate(arg));
+			console.log("GameTurnTimer From Server===========>", arg);
+		});
+	}
 	onUpdateMove(cur_board) {
 		console.log(cur_board);
 		this.socket.emit("update-move", cur_board);
@@ -60,83 +90,14 @@ class Client {
 		console.log("queue leave");
 		this.socket.emit("queue-leave");
 	}
-
-	// ListenCurrentState() {
-	// 	this.socket.on("current-state", (data) => {
-	// 		// console.log('current-state', data);
-	// 		// data.state = 2;
-	// 		if (data.state == 1) {
-	// 			// this.gameSceneRefence.previousDraw.create();
-	// 			// console.log(this.gameSceneRefence.previousDraw)
-	// 			this.gameSceneRefence.previousDraw.ShowPreviousDrawObjects();
-	// 		} else if (data.state == 2) {
-	// 			// console.log(this.gameSceneRefence.drawClass)
-	// 			this.gameSceneRefence.drawClass.ShowDrawClassObjects();
-	// 		} else if (data.state == 3) {
-	// 			// console.log(this.gameSceneRefence.drawHistory)
-	// 			this.gameSceneRefence.drawHistory.ShowDrawNumberHistory();
-	// 		} else {
-	// 		}
-
-	// 		// this.gameSceneRefence.previousDraw.create();
-	// 	});
-	// }
-	// StartTimerFromServer() {
-	// 	// console.log('StartTimerFromServer')
-	// 	this.socket.on("start-timer", (data) => {
-	// 		// console.log('start-timer', data);
-	// 		// this.gameSceneRefence.previousDraw.create();
-	// 	});
-	// }
-
-	// GetTimerFromServer() {
-	// 	// console.log('GetTimerFromServer');
-
-	// 	this.socket.on("update-timer", (data) => {
-	// 		// console.log('update-timer',data);
-	// 		this.gameSceneRefence.drawNumberHits.HideDrawNumberHits();
-	// 		this.gameSceneRefence.drawClass.HideDrawClassObjects();
-	// 		this.gameSceneRefence.drawHistory.HideDrawNumberHistory();
-	// 		this.gameSceneRefence.previousDraw.ShowPreviousDrawObjects();
-	// 		this.gameSceneRefence.previousDraw.CreateTimer(data);
-	// 	});
-	// }
-
-	// StartDrawFromServer() {
-	// 	// console.log('StartDrawFromServer')
-	// 	this.socket.on("start-draw", (data) => {
-	// 		// console.log('start-draw', data);
-	// 		// this.gameSceneRefence.drawClass.ShowDrawClassObjects();
-	// 		this.gameSceneRefence.drawClass.StartDraw();
-	// 	});
-	// }
-
-	// CurrentDrawNumberFromServer() {
-	// 	// console.log('CurrentDrawTimerFromServer')
-	// 	this.socket.on("update-draw", (data) => {
-	// 		let time = performance.now();
-	// 		// console.log('update-draw', data, time);
-	// 		this.gameSceneRefence.drawHistory.HideDrawNumberHistory();
-	// 		this.gameSceneRefence.previousDraw.HidePreviousDrawObjects();
-	// 		this.gameSceneRefence.drawClass.ShowDrawClassObjects();
-	// 		this.gameSceneRefence.drawClass.GetCurrentDrawDataFromServer(data);
-	// 	});
-	// }
-	// StopDrawNumberFromServer() {
-	// 	// console.log('CurrentDrawTimerFromServer')
-	// 	this.socket.on("stop-draw", (data) => {
-	// 		// console.log('stop-draw', data);
-	// 		this.gameSceneRefence.drawClass.HideDrawClassObjects();
-	// 		this.gameSceneRefence.previousDraw.HidePreviousDrawObjects();
-	// 		this.gameSceneRefence.drawClass.StopAllBlinkTween();
-	// 		this.gameSceneRefence.drawHistory.ShowDrawNumberHistory();
-	// 		this.gameSceneRefence.drawHistory.LoadFinalScene();
-	// 	});
-	// }
-
-	// OnBubblePressed(_txt) {
-	// 	this.socket.emit("txt2Speech", { text: _txt });
-	// }
+	emitDisConnect() {
+		this.socket.disconnect();
+	}
+	onGameEnd(dispatch) {
+		this.socket.on("game-end", (arg) => {
+			dispatch(gameEnd(arg));
+		});
+	}
 }
 
 // let client = new Client();

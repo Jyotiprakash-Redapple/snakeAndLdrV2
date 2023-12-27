@@ -2,6 +2,27 @@ import { actionTypes, gameStatus, gameMode } from "./constant";
 
 let reducer = (state, action) => {
 	switch (action.type) {
+		case actionTypes.GET_USER_DATA: {
+			const userData = {
+				id: action.payload?.user_id,
+				user_name: action.payload?.user_name || "test 1",
+				score: action.payload?.score || 0,
+				colour: action.payload?.colour,
+				profile: action.payload?.profile_picture || "/default.png",
+			};
+
+			return {
+				...state,
+				pl: { ...userData },
+			};
+		}
+		case actionTypes.GET_MATCH_MAKEING_DATA: {
+			return {
+				...state,
+				pl: action.payload.player,
+				op: action.payload.opponent,
+			};
+		}
 		case actionTypes.GAME_MODE: {
 			return {
 				...state,
@@ -45,11 +66,53 @@ let reducer = (state, action) => {
 				...action.payload,
 			};
 		}
+		case actionTypes.GAME_TIME: {
+			return { ...state, gameTime: action.payload.counter };
+		}
+		case actionTypes.TURN_TIME: {
+			return { ...state, turnTime: action.payload };
+		}
 
-		// socket board update each movement
+		case actionTypes.UPDATE_TURN: {
+			const gameObject = action.payload;
+			return {
+				...state,
+				totalTurnTime: Number(gameObject.turn_time),
+				turn: gameObject.turn
+					? gameObject.player.colour.charAt(0).toLowerCase()
+					: gameObject.opponent.colour.charAt(0).toLowerCase(),
+			};
+		}
+		case actionTypes.GAME_END: {
+			let gameEndObj = action.payload;
+			state.socket.onUpdateWin({
+				player: {
+					id: gameEndObj.player.id,
+					score: gameEndObj.player.score,
+					colour: gameEndObj.player.colour,
+				},
+				opponent: {
+					id: gameEndObj.opponent.id,
+					score: gameEndObj.opponent.score,
+					colour: gameEndObj.opponent.colour,
+				},
+				winner: gameEndObj.winner,
+			});
+			let status = "";
+			if (gameEndObj.winner) {
+				status = gameEndObj.player.colour === "black" ? gameStatus.black : gameStatus.white;
+			} else {
+				status = gameEndObj.opponent.colour === "black" ? gameStatus.black : gameStatus.white;
+			}
+			return {
+				...state,
+				status: status,
+			};
+		}
+
 		case actionTypes.BOARD_UPDATE: {
 			let board = action.payload.arg.board;
-			console.log(board, "updated board from server");
+
 			if (board) {
 				if (board?.turn) {
 					return {
@@ -96,11 +159,17 @@ let reducer = (state, action) => {
 					state.position.player2.value = action.payload.currentPosition;
 				}
 			}
-			if (state.position.player1.value > state.position.player2.value && state.position.player1.color === "r") {
+			if (
+				state.position.player1.value > state.position.player2.value &&
+				state.position.player1.color === "r"
+			) {
 				advantage = state.position.player1.value - state.position.player2.value;
 				advantageStatus = "r";
 			} else {
-				if (state.position.player1.value > state.position.player2.value && state.position.player1.color === "y") {
+				if (
+					state.position.player1.value > state.position.player2.value &&
+					state.position.player1.color === "y"
+				) {
 					advantage = state.position.player1.value - state.position.player2.value;
 					advantageStatus = "y";
 				}
@@ -116,7 +185,10 @@ let reducer = (state, action) => {
 					},
 					game_state: {
 						status: state.status,
-						advantage: advantage === 0 || state.position.player1.value === state.position.player2.value ? "Niether Side " : advantageStatus,
+						advantage:
+							advantage === 0 || state.position.player1.value === state.position.player2.value
+								? "Niether Side "
+								: advantageStatus,
 					},
 				});
 			}
@@ -126,26 +198,6 @@ let reducer = (state, action) => {
 			};
 		}
 
-		// change the turn in board
-		case actionTypes.TURN_CHANGE: {
-			let turn = state.turn === "r" ? "y" : "r";
-
-			if (state.mode === gameMode.online) {
-				state.socket.onUpdateMove({
-					board: {
-						turn,
-					},
-					game_state: {
-						status: state.status,
-						advantage: state.advantage === 0 ? "Niether Side " : state.advantage > 0 ? "red" : "yellow",
-					},
-				});
-			}
-			return {
-				...state,
-				turn,
-			};
-		}
 		// change game status
 		case actionTypes.STATUS: {
 			return {
@@ -194,7 +246,6 @@ let reducer = (state, action) => {
 			return {
 				...state,
 			};
-			break;
 		}
 	}
 };
