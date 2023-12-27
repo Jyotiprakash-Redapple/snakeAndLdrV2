@@ -3,19 +3,18 @@ import { useNavigate } from "react-router-dom";
 import { app } from "../../config/appConfig";
 import Player from "../../components/player/player";
 import Opponent from "../../components/opponent/opponent";
-//import { useAppContext } from "../../arbitar/context/Provider";
+import { useAppContext } from "../../arbitar/context/Provider";
 import Countdown from "../../components/countdown/countdown";
 function MatchMackeing() {
-	const appState = null;
-	//const { appState, dispatch } = useAppContext();
+	const { appState, dispatch } = useAppContext();
 	const { imageArray } = app;
 	const router = useNavigate();
 	useEffect(() => {
-		//if (appState.socket) {
-		//	appState.socket.getGameInitFromServer(dispatch);
-		//} else {
-		// router("/internet-disconnect", { replace: true });
-		//}
+		if (appState.socket) {
+			appState.socket.getGameInitFromServer(dispatch);
+		} else {
+			router("/internet-disconnect", { replace: true });
+		}
 	}, []);
 
 	return (
@@ -29,8 +28,8 @@ function MatchMackeing() {
 							<div className='match_make_title'></div>
 							{/*<--start::match making playr pic and op pic box ---->*/}
 							<div className='match_make_player'>
-								<Player name={"text"} image={imageArray[0]} />
-								<Opponent name={"hello"} image={imageArray[0]} imageArray={imageArray} />
+								<Player name={appState?.pl?.user_name} image={appState?.pl?.profile} />
+								<Opponent name={appState?.op?.user_name} image={appState?.op?.profile} imageArray={imageArray} />
 								<span className='player_vs_op'></span>
 							</div>
 							{/*<--end::match making playr pic and op pic box ---->*/}

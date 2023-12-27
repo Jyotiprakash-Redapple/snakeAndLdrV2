@@ -1,17 +1,15 @@
 import React from "react";
 
-const Square = ({ number, player, turn }) => {
+const Square = ({ number }) => {
 	return (
 		<div
-			className="square"
+			className='square'
 			style={{
 				width: "35px",
 				height: "35px",
-				border: "2px solid red",
-				// backgroundColor: "red",
 				boxSizing: "border-box",
 			}}>
-			{number}
+			{/* {number} */}
 		</div>
 	);
 };

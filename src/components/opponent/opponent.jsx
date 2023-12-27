@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from "react";
 import style from "./opponent.module.css";
 
-// import { useAppContext } from "../../arbitar/context/Provider";
-// import { gameStatus } from "../../arbitar/context/reducer/constant";
+import { useAppContext } from "../../arbitar/context/Provider";
+import { gameStatus } from "../../arbitar/context/reducer/constant";
 import { useNavigate } from "react-router-dom";
 
 function Opponent({ name, image, imageArray }) {
 	const [avtars, setAvtars] = useState(imageArray);
 	const [nameOpponet, setNameOpponet] = useState(["avik", "ruhul", "lixa", "ebey"]);
-	// const { appState, dispatch } = useAppContext();
-	// reverse the image array
+	const { appState, dispatch } = useAppContext();
 
-	let status = "ongoing";
 	const router = useNavigate();
 	useEffect(() => {
-		if (status === "pending") {
+		if (appState.status === gameStatus.pending) {
 			const interval = setInterval(() => {
 				setAvtars([...avtars.slice(1), avtars[0]]);
 				setNameOpponet([...nameOpponet.slice(1), nameOpponet[0]]); // Rotate avatars
@@ -22,30 +20,26 @@ function Opponent({ name, image, imageArray }) {
 
 			return () => clearInterval(interval);
 		} else {
-			if (status === "ongoing") {
+			if (appState.status === gameStatus.ongoing) {
 				setTimeout(() => {
-					//router("/game/player", { replace: true });
-				}, 2000);
+					router("/game/player", { replace: true });
+				}, 2500);
 			}
 		}
 	}, [avtars]);
-	useEffect(() => {
-		setTimeout(() => {
-			status = "ongoing";
-		}, 100);
-	}, []);
+
 	return (
 		<div className={style.opponent}>
 			<div className={style.opponent_wrapper}>
 				<div className={style.inner_wrapper}>
 					<div className={style.image_wrapper}>
-						{status !== "pending" ? (
+						{appState.status !== gameStatus.pending ? (
 							<>
 								<img
 									src={image}
 									width={20}
 									height={20}
-									alt="image"
+									alt='image'
 									style={{
 										width: "72%",
 										height: "69%",
@@ -63,7 +57,7 @@ function Opponent({ name, image, imageArray }) {
 											src={avatar}
 											width={20}
 											height={20}
-											alt="image"
+											alt='image'
 											style={{
 												width: "72%",
 												height: "69%",
@@ -77,7 +71,7 @@ function Opponent({ name, image, imageArray }) {
 						)}
 					</div>
 					<div className={style.name_wrapper}>
-						{status !== "pending" ? (
+						{appState.status !== gameStatus.pending ? (
 							<p
 								style={{
 									whiteSpace: "nowrap",

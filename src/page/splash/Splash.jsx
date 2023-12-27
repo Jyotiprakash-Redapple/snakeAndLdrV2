@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-//import Client from "../../client/socket";
-// import { newSocketConnect } from "../../arbitar/context/reducer/move";
-// import { useAppContext } from "../../arbitar/context/Provider";
+import Client from "../../client/client";
+import { newSocketConnect } from "../../arbitar/context/reducer/move";
+import { useAppContext } from "../../arbitar/context/Provider";
 function Splash() {
 	const navigate = useNavigate();
 	// navigator.vibrate =
@@ -14,7 +14,7 @@ function Splash() {
 	// } else {
 	// 	console.log("vibrate not supported this device===>");
 	// }
-	//const { appState, dispatch } = useAppContext();
+	const { appState, dispatch } = useAppContext();
 
 	const checkQuery = () => {
 		const search = window.location.search;
@@ -24,11 +24,11 @@ function Splash() {
 			// game mode online
 			if (searchParams.get("auth_token") && searchParams.size === 1) {
 				let queryVar = searchParams.get("auth_token");
-				//const socket = new Client();
-				//dispatch(newSocketConnect({ socket }));
+				const socket = new Client();
+				dispatch(newSocketConnect({ socket }));
 				localStorage.setItem("auth_token", queryVar);
 				localStorage.setItem("game_mode", "online");
-				//navigate("/loader", { replace: true });
+				navigate("/loader", { replace: true });
 			} else {
 				// game mode offlien
 				if (searchParams.get("mode")) {
@@ -37,15 +37,12 @@ function Splash() {
 						let queryVar = searchParams.get("auth_token");
 						localStorage.setItem("offline_auth_token", queryVar);
 						localStorage.setItem("game_mode", "offline");
-						//	navigate("/loader", { replace: true });
+						navigate("/loader", { replace: true });
 					}
 				}
 			}
 		} else {
-			console.log(
-				"%cAuthentication Faild",
-				"background-color: white; color: red; font-size: larger; font-weight: 700"
-			);
+			console.log("%cAuthentication Faild", "background-color: white; color: red; font-size: larger; font-weight: 700");
 		}
 	};
 
@@ -66,10 +63,10 @@ function Splash() {
 	return (
 		<>
 			<main>
-				<div className="view_container">
-					<div className="splash_wrapper">
-						<div className="splash_background"></div>
-						<div className="splash_logo"></div>
+				<div className='view_container'>
+					<div className='splash_wrapper'>
+						<div className='splash_background'></div>
+						<div className='splash_logo'></div>
 					</div>
 				</div>
 			</main>

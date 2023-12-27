@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { animated } from "react-spring";
-import { cordinate, generateGrid } from "../../arbitar/helper";
+import { generateArea } from "../../arbitar/helper";
 import useWindowDimension from "../../arbitar/hook/useWindowDimensions";
 const Pawn = animated(({ position, player, parent_position }) => {
 	const [view_port, _] = useState(useWindowDimension());
-
-	// const device = view_port.width <= 600 ? cordinate["medium"] : cordinate["large"];
-	const device = generateGrid(32);
+	const device = generateArea(32);
+	console.log(position, player, parent_position, "snake and ladder");
 	const getPawnSize = () => {
 		// if (view_port.width <= 600) {
 		// 	return parent_position.player1.value === parent_position.player2.value ? "30px" : "40px";
@@ -19,6 +18,7 @@ const Pawn = animated(({ position, player, parent_position }) => {
 
 	return (
 		<animated.div
+			id={`pawn-${player}`}
 			style={{
 				position: "absolute",
 
@@ -28,15 +28,15 @@ const Pawn = animated(({ position, player, parent_position }) => {
 
 				top:
 					parent_position.player1.value === parent_position.player2.value && player === "r"
-						? "-0px"
+						? "-7px"
 						: parent_position.player1.value === parent_position.player2.value && player === "y"
-						? "0px"
+						? "7px"
 						: "",
 				left:
 					parent_position.player1.value === parent_position.player2.value && player === "r"
-						? "-0px"
+						? "-7px"
 						: parent_position.player1.value === parent_position.player2.value && player === "y"
-						? "0px"
+						? "7px"
 						: "",
 
 				borderRadius: "50%",

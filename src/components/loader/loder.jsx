@@ -1,11 +1,11 @@
 import React from "react";
-//import { useAppContext } from "../../arbitar/context/Provider";
+import { useAppContext } from "../../arbitar/context/Provider";
 import { useNavigate } from "react-router-dom";
 function Loadeing() {
 	const router = useNavigate();
 	let gameMode = localStorage.getItem("game_mode");
 
-	//const { appState, dispatch } = useAppContext();
+	const { appState, dispatch } = useAppContext();
 
 	const widthRef = React.useRef(0);
 	const [loadingWidth, setLoadingWidth] = React.useState(2);
@@ -22,23 +22,23 @@ function Loadeing() {
 				setLoadingWidth(widthRef.current);
 				if (widthRef.current === 94) {
 					if (gameMode === "offline") {
-						//router("/game/ai", { replace: true });
+						router("/game/ai", { replace: true });
 					} else if (gameMode === "online") {
-						// if (appState.socket) {
-						// redom match queue emit
-						//appState.socket.onRendomMatch();
-						//	setTimeout(() => {
-						// appState.socket.getUpdateDetailsFromServer(dispatch);
-						// appState.socket.onGmaeTime(dispatch);
-						// appState.socket.onTurnTimer(dispatch);
-						// appState.socket.onTurnChange(dispatch);
-						// appState.socket.onGameEnd(dispatch);
-						// appState.socket.getUserDataFromServer(dispatch);
-						// appState.socket.getMatchMakeingDataFromServer(dispatch);
-						// appState.socket.getUpdateCheckStatusFromServer(dispatch);
-						//	router("/match-make", { replace: true });
-						//}, 1000);
-						//	}
+						if (appState.socket) {
+							// redom match queue emit
+							appState.socket.onRendomMatch();
+							setTimeout(() => {
+								appState.socket.getUpdateDetailsFromServer(dispatch);
+								appState.socket.onGmaeTime(dispatch);
+								appState.socket.onTurnTimer(dispatch);
+								appState.socket.onTurnChange(dispatch);
+								appState.socket.onGameEnd(dispatch);
+								appState.socket.getUserDataFromServer(dispatch);
+								appState.socket.getMatchMakeingDataFromServer(dispatch);
+								appState.socket.getUpdateCheckStatusFromServer(dispatch);
+								router("/match-make", { replace: true });
+							}, 1000);
+						}
 					}
 					clearInterval(timer);
 				}
@@ -52,27 +52,25 @@ function Loadeing() {
 		handleLoadPage();
 
 		return () => {
-			// cleanup function to clear interval if component unmounts
 			clearInterval(timer);
 		};
 	}, [widthRef.current, gameMode, router]);
-	// fix loder active bar image
 
 	return (
 		<main>
-			<div className="view_container">
-				<div className="load_wrapper">
-					<div className="load_background">
-						<div className="inner_wrapper">
-							<div className="title"></div>
-							<div className="loadeing_bg">
-								<div className="loadeing_text"></div>
+			<div className='view_container'>
+				<div className='load_wrapper'>
+					<div className='load_background'>
+						<div className='inner_wrapper'>
+							<div className='title'></div>
+							<div className='loadeing_bg'>
+								<div className='loadeing_text'></div>
 								<img
 									key={widthRef.current}
-									src="/loader/loading_bar.png"
+									src='/loader/loading_bar.png'
 									width={20}
 									height={30}
-									alt="loader"
+									alt='loader'
 									style={{
 										width: `${loadingWidth}%`,
 										objectFit: "cover",

@@ -9,12 +9,12 @@ function App() {
 		<>
 			<Router>
 				<Routes>
-					<Route path="/" element={<SplashScreen />} />
-					<Route path="/loader" element={<LoadingScrren />} />
-					<Route path="/game/player" element={<GamePLayer />} />
-					<Route path="/game/ai" element={<GameAI />} />
-					<Route path="/match-make" element={<MatchMake />} />
-					<Route path="*" element={<SplashScreen />} />
+					<Route path='/' element={<SplashScreen />} />
+					<Route path='/loader' element={<LoadingScrren />} />
+					<Route path='/game/player' element={<GamePLayer />} />
+					<Route path='/game/ai' element={<GameAI />} />
+					<Route path='/match-make' element={<MatchMake />} />
+					<Route path='*' element={<SplashScreen />} />
 				</Routes>
 			</Router>
 		</>
