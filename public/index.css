@@ -9,7 +9,7 @@
 	-moz-osx-font-smoothing: grayscale;
 	-webkit-text-size-adjust: 100%;
 
-	--tile-size: 40px;
+	--tile-size: 32px;
 	--light-tiles: #72d0ff;
 	--dark-tiles: #4b74a3;
 	--high-light-tiles: #2417d3;
@@ -168,7 +168,7 @@ html::before {
 .player_bg > .inner_wrapper > .btm_sesc {
 	width: 100%;
 	height: 80%;
-	/* background-color: #72d0ff; */
+	background-color: #72d0ff;
 }
 
 .player_bg > .inner_wrapper > .top_sesc > .left_base {
@@ -183,7 +183,8 @@ html::before {
 	align-items: center;
 	justify-content: space-between;
 }
-.player_bg > .inner_wrapper > .top_sesc > .left_base > .player_name {
+.player_bg > .inner_wrapper > .top_sesc > .left_base > .player_name,
+.player_bg > .inner_wrapper > .top_sesc > .right_base > .player_name {
 	width: 68%;
 	height: 50%;
 
@@ -192,17 +193,50 @@ html::before {
 	align-items: center;
 	justify-content: center;
 }
-.player_bg > .inner_wrapper > .top_sesc > .left_base > .player_name > .name {
+.player_bg > .inner_wrapper > .top_sesc > .left_base > .player_name > .name,
+.player_bg > .inner_wrapper > .top_sesc > .right_base > .player_name > .name {
 	width: 100%;
 	height: 30%;
-	background-color: red;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
-.player_bg > .inner_wrapper > .top_sesc > .left_base > .player_name > .turn_bar_bg {
+.player_bg > .inner_wrapper > .top_sesc > .left_base > .player_name > .turn_bar_bg,
+.player_bg > .inner_wrapper > .top_sesc > .right_base > .player_name > .turn_bar_bg {
 	width: 100%;
 	height: 90%;
-	/* background-color: gainsboro; */
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
-.player_bg > .inner_wrapper > .top_sesc > .left_base > .player_profile {
+
+.player_bg
+	> .inner_wrapper
+	> .top_sesc
+	> .left_base
+	> .player_name
+	> .turn_bar_bg
+	> .turn_bar_inActive_bg,
+.player_bg
+	> .inner_wrapper
+	> .top_sesc
+	> .right_base
+	> .player_name
+	> .turn_bar_bg
+	> .turn_bar_inActive_bg {
+	width: 80%;
+	height: 7px;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-image: url("./game_play/time_base.png");
+}
+.player_bg > .inner_wrapper > .top_sesc > .left_base > .player_profile,
+.player_bg > .inner_wrapper > .top_sesc > .right_base > .player_profile {
 	width: 20%;
 	height: 47%;
 	margin-bottom: 2px;
@@ -211,6 +245,7 @@ html::before {
 	background-repeat: no-repeat;
 	background-size: contain;
 }
+
 .player_bg > .inner_wrapper > .top_sesc > .right_base {
 	height: 100%;
 	width: 120px;
@@ -218,6 +253,9 @@ html::before {
 	background-image: url("/game_play/right_base.png");
 	background-repeat: no-repeat;
 	background-size: contain;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 }
 
 .player_bg > .inner_wrapper > .top_sesc > .dise_base {
@@ -226,6 +264,87 @@ html::before {
 	background-image: url("/game_play/dise_base.png");
 	background-repeat: no-repeat;
 	background-size: contain;
+}
+
+/*====================================Game Board Component=========================*/
+.gameBoard {
+	width: 100%;
+	height: 100%;
+	position: relative;
+	display: flex;
+	background-color: #000;
+	align-items: center;
+	justify-content: center;
+}
+.game_board_img {
+	/* width: 372px;
+	height: 372px; */
+	width: 350px;
+	height: 350px;
+	position: absolute;
+	left: 0;
+	top: 0;
+	background-size: cover;
+}
+.board_temp {
+	position: relative;
+	display: grid;
+	grid-template-columns: repeat(10, var(--tile-size));
+	grid-template-rows: repeat(10, var(--tile-size));
+	transition: all 0.3s ease-in-out;
+	margin-bottom: 13px;
+	margin-right: 1px;
+}
+
+.square {
+	width: var(--tile-size);
+	height: var(--tile-size);
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+	position: relative;
+	transition: all 0.3s ease-in-out;
+}
+.square.multiplayer {
+	display: flex;
+	flex-direction: row;
+}
+
+/**********************************Player Position Color **************************/
+.player {
+	width: 35px;
+	height: 35px;
+	position: absolute;
+	background-size: 100%;
+	z-index: 1000;
+	transition: all 0.3s ease-in-out;
+}
+.pl-s {
+	width: var(--tile-size);
+	height: var(--tile-size);
+}
+.player.r {
+	background-image: url("/game_play/red.png");
+	background-repeat: no-repeat;
+}
+.player.y {
+	background-image: url("/game_play/blue.png");
+	background-size: 90%;
+	background-repeat: no-repeat;
+}
+
+#pawn-player-1 {
+	background-image: url("/game_play/red.png");
+	background-repeat: no-repeat;
+	transition: all 0.3s ease-in-out;
+}
+#pawn-player-2 {
+	background-image: url("/game_play/blue.png");
+
+	background-repeat: no-repeat;
+	transition: all 0.3s ease-in-out;
 }
 /* ================================ matchMaking Component =============================*/
 .search_banner_bg {
