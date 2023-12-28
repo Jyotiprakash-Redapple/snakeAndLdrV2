@@ -64,10 +64,10 @@ let makeNewMove = ({ player_turn, currentPosition }) => {
 	};
 };
 
-let makeTrunChange = () => {
+let makeAnimateMove = ({ player_turn, currentPosition }) => {
 	return {
-		type: actionTypes.TURN_CHANGE,
-		payload: {},
+		type: actionTypes.ANIMATE_PAWN,
+		payload: { player_turn, currentPosition },
 	};
 };
 
@@ -109,18 +109,20 @@ let updateBoard = ({ arg }) => {
 		payload: { arg },
 	};
 };
+
+let animateBoard = ({ arg }) => {
+	return {
+		type: actionTypes.ANIMATE_BOARD_UPDATE,
+		payload: { arg },
+	};
+};
 /**
  * update game mode
  */
 let updateGameMode = (arg) => {
 	return { type: actionTypes.GAME_MODE, payload: arg };
 };
-/**
- * update game mode
- */
-let updateGameStatus = () => {
-	return { type: actionTypes.STATUS, payload: "" };
-};
+
 /**
  * make AI boardPosition
  */
@@ -129,6 +131,7 @@ let newGameInitAi = () => {
 	let gameInit = {
 		position: {
 			player1: {
+				profile: "/default.png",
 				color: "r",
 				value: 1,
 				score: 0,
@@ -136,6 +139,7 @@ let newGameInitAi = () => {
 				id: 2,
 			},
 			player2: {
+				profile: "/default.png",
 				color: "y",
 				value: 1,
 				score: 0,
@@ -154,18 +158,18 @@ let newGameInitAi = () => {
 };
 export {
 	makeNewMove,
-	makeTrunChange,
 	dectateWin,
 	updateBoard,
 	newSocketConnect,
 	gameInit,
 	updateGameMode,
 	newGameInitAi,
-	updateGameStatus,
 	getUserData,
 	getMatchMakeingData,
 	gameEnd,
 	turnTimer,
 	gameTimer,
 	turnUpdate,
+	makeAnimateMove,
+	animateBoard,
 };

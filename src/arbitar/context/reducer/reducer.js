@@ -32,15 +32,15 @@ let reducer = (state, action) => {
 
 		// game init when click player btn
 		case actionTypes.NEW_GAME_INIT: {
-			const player = action.payload.arg.player;
+			const gameObject = action.payload.arg;
 			let gameInit = {
 				position: {
 					player1: {
-						color: player.colour === "white" ? "r" : "y",
+						color: gameObject.player.colour === "white" ? "r" : "y",
 						value: 1,
 						score: 0,
-						user_name: player.user_name,
-						id: player.id,
+						user_name: gameObject.player.user_name,
+						id: gameObject.player.id,
 					},
 					player2: {
 						color: action.payload.arg.opponent.colour === "black" ? "y" : "r",
@@ -50,14 +50,21 @@ let reducer = (state, action) => {
 						id: action.payload.arg.opponent.id,
 					},
 				},
-
 				turn: "r",
-				status: gameStatus.pending,
+				status: gameStatus.ongoing,
+				turnTime: {
+					currentPlayerId: gameObject.turn ? gameObject.player.id : gameObject.opponent.id,
+					counter: "30.00",
+					life: 3,
+				},
+				totalTurnTime: gameObject.turn_time,
 			};
 
 			return {
 				...state,
 				...gameInit,
+				pl: action.payload.arg.player,
+				op: action.payload.arg.opponent,
 			};
 		}
 		case actionTypes.NEW_GAME_INIT_AI: {
@@ -75,12 +82,11 @@ let reducer = (state, action) => {
 
 		case actionTypes.UPDATE_TURN: {
 			const gameObject = action.payload;
+
 			return {
 				...state,
 				totalTurnTime: Number(gameObject.turn_time),
-				turn: gameObject.turn
-					? gameObject.player.colour.charAt(0).toLowerCase()
-					: gameObject.opponent.colour.charAt(0).toLowerCase(),
+				turn: gameObject.turn && gameObject.player.colour === "white" ? "r" : "y",
 			};
 		}
 		case actionTypes.GAME_END: {
@@ -100,49 +106,74 @@ let reducer = (state, action) => {
 			});
 			let status = "";
 			if (gameEndObj.winner) {
-				status = gameEndObj.player.colour === "black" ? gameStatus.black : gameStatus.white;
+				status = gameEndObj.player.colour === "black" ? gameStatus.r_win : gameStatus.y_win;
 			} else {
-				status = gameEndObj.opponent.colour === "black" ? gameStatus.black : gameStatus.white;
+				status = gameEndObj.opponent.colour === "black" ? gameStatus.r_win : gameStatus.y_win;
 			}
 			return {
 				...state,
 				status: status,
 			};
 		}
-
+		case actionTypes.UPDATE_TURN: {
+			const gameObject = action.payload;
+			return {
+				...state,
+				totalTurnTime: Number(gameObject.turn_time),
+				turn: gameObject.turn ? gameObject.player.colour.charAt(0).toLowerCase() : gameObject.opponent.colour.charAt(0).toLowerCase(),
+			};
+		}
 		case actionTypes.BOARD_UPDATE: {
 			let board = action.payload.arg.board;
 
 			if (board) {
-				if (board?.turn) {
+				if (board?.status) {
 					return {
 						...state,
-						turn: board.turn,
-						// advantage: board?.advantage ? board.advantage : state.advantage,
+						status: board.status,
 					};
 				} else {
-					if (board?.status) {
-						return {
-							...state,
-							status: board.status,
-							// advantage: board?.advantage ? board.advantage : state.advantage,
-						};
+					let updatedColor = board.color;
+					if (state.position.player1.color === updatedColor) {
+						state.position.player1.value = board.currentPosition;
+						state.advantage = board?.advantage ? board.advantage : state.advantage;
 					} else {
-						let updatedColor = board.color;
-						if (state.position.player1.color === updatedColor) {
-							state.position.player1.value = board.currentPosition;
+						if (state.position.player2.color === updatedColor) {
+							state.position.player2.value = board.currentPosition;
 							state.advantage = board?.advantage ? board.advantage : state.advantage;
-						} else {
-							if (state.position.player2.color === updatedColor) {
-								state.position.player2.value = board.currentPosition;
-								state.advantage = board?.advantage ? board.advantage : state.advantage;
-							}
 						}
-
-						return {
-							...state,
-						};
 					}
+
+					return {
+						...state,
+					};
+				}
+			}
+		}
+
+		case actionTypes.ANIMATE_BOARD_UPDATE: {
+			let board = action.payload.arg.board;
+			if (board) {
+				if (board?.status) {
+					return {
+						...state,
+						status: board.status,
+					};
+				} else {
+					let updatedColor = board.color;
+					if (state.position.player1.color === updatedColor) {
+						state.position.player1.value = board.currentPosition;
+						state.advantage = board?.advantage ? board.advantage : state.advantage;
+					} else {
+						if (state.position.player2.color === updatedColor) {
+							state.position.player2.value = board.currentPosition;
+							state.advantage = board?.advantage ? board.advantage : state.advantage;
+						}
+					}
+
+					return {
+						...state,
+					};
 				}
 			}
 		}
@@ -159,17 +190,11 @@ let reducer = (state, action) => {
 					state.position.player2.value = action.payload.currentPosition;
 				}
 			}
-			if (
-				state.position.player1.value > state.position.player2.value &&
-				state.position.player1.color === "r"
-			) {
+			if (state.position.player1.value > state.position.player2.value && state.position.player1.color === "r") {
 				advantage = state.position.player1.value - state.position.player2.value;
 				advantageStatus = "r";
 			} else {
-				if (
-					state.position.player1.value > state.position.player2.value &&
-					state.position.player1.color === "y"
-				) {
+				if (state.position.player1.value > state.position.player2.value && state.position.player1.color === "y") {
 					advantage = state.position.player1.value - state.position.player2.value;
 					advantageStatus = "y";
 				}
@@ -185,10 +210,7 @@ let reducer = (state, action) => {
 					},
 					game_state: {
 						status: state.status,
-						advantage:
-							advantage === 0 || state.position.player1.value === state.position.player2.value
-								? "Niether Side "
-								: advantageStatus,
+						advantage: advantage === 0 || state.position.player1.value === state.position.player2.value ? "Niether Side " : advantageStatus,
 					},
 				});
 			}
@@ -198,13 +220,46 @@ let reducer = (state, action) => {
 			};
 		}
 
-		// change game status
-		case actionTypes.STATUS: {
+		case actionTypes.ANIMATE_PAWN: {
+			let advantage = state.advantage;
+			let advantageStatus = "";
+			let updatedColor = action.payload.player_turn;
+			if (state.position.player1.color === updatedColor) {
+				state.position.player1.value = action.payload.currentPosition;
+			} else {
+				if (state.position.player2.color === updatedColor) {
+					state.position.player2.value = action.payload.currentPosition;
+				}
+			}
+			if (state.position.player1.value > state.position.player2.value && state.position.player1.color === "r") {
+				advantage = state.position.player1.value - state.position.player2.value;
+				advantageStatus = "r";
+			} else {
+				if (state.position.player1.value > state.position.player2.value && state.position.player1.color === "y") {
+					advantage = state.position.player1.value - state.position.player2.value;
+					advantageStatus = "y";
+				}
+			}
+
+			if (state.mode === gameMode.online) {
+				state.socket.onAnimateMove({
+					board: {
+						color: action.payload.player_turn,
+						currentPosition: action.payload.currentPosition,
+						advantage: advantage,
+					},
+					game_state: {
+						status: state.status,
+						advantage: advantage === 0 || state.position.player1.value === state.position.player2.value ? "Niether Side " : advantageStatus,
+					},
+				});
+			}
 			return {
 				...state,
-				status: gameStatus.ongoing,
+				advantage: advantage,
 			};
 		}
+
 		// win one player
 		case actionTypes.WIN: {
 			let winner = action.payload === "r" ? gameStatus.r_win : gameStatus.y_win;

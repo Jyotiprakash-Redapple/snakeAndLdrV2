@@ -142,7 +142,7 @@ html::before {
 	cursor: pointer;
 }
 
-.pawn_click > div > .role_btn:hover {
+.pawn_click > div > .role_btn.active:hover {
 	transform: scale(1.4);
 }
 
@@ -211,20 +211,8 @@ html::before {
 	justify-content: center;
 }
 
-.player_bg
-	> .inner_wrapper
-	> .top_sesc
-	> .left_base
-	> .player_name
-	> .turn_bar_bg
-	> .turn_bar_inActive_bg,
-.player_bg
-	> .inner_wrapper
-	> .top_sesc
-	> .right_base
-	> .player_name
-	> .turn_bar_bg
-	> .turn_bar_inActive_bg {
+.player_bg > .inner_wrapper > .top_sesc > .left_base > .player_name > .turn_bar_bg > .turn_bar_inActive_bg,
+.player_bg > .inner_wrapper > .top_sesc > .right_base > .player_name > .turn_bar_bg > .turn_bar_inActive_bg {
 	width: 80%;
 	height: 7px;
 	display: flex;
@@ -264,6 +252,10 @@ html::before {
 	background-image: url("/game_play/dise_base.png");
 	background-repeat: no-repeat;
 	background-size: contain;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 /*====================================Game Board Component=========================*/

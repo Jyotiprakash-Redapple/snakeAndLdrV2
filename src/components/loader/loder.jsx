@@ -1,9 +1,11 @@
 import React from "react";
 import { useAppContext } from "../../arbitar/context/Provider";
 import { useNavigate } from "react-router-dom";
+import { updateGameMode } from "../../arbitar/context/reducer/move";
+import { gameMode } from "../../arbitar/context/reducer/constant";
 function Loadeing() {
 	const router = useNavigate();
-	let gameMode = localStorage.getItem("game_mode");
+	let _gameMode = localStorage.getItem("game_mode");
 
 	const { appState, dispatch } = useAppContext();
 
@@ -21,13 +23,16 @@ function Loadeing() {
 				widthRef.current = widthRef.current + 1;
 				setLoadingWidth(widthRef.current);
 				if (widthRef.current === 94) {
-					if (gameMode === "offline") {
+					if (_gameMode === "offline") {
 						router("/game/ai", { replace: true });
-					} else if (gameMode === "online") {
+					} else if (_gameMode === "online") {
 						if (appState.socket) {
 							// redom match queue emit
 							appState.socket.onRendomMatch();
+							dispatch(updateGameMode(gameMode.online));
 							setTimeout(() => {
+								dispatch();
+								appState.socket.getAnimateMoveFromServer(dispatch);
 								appState.socket.getUpdateDetailsFromServer(dispatch);
 								appState.socket.onGmaeTime(dispatch);
 								appState.socket.onTurnTimer(dispatch);
@@ -35,14 +40,13 @@ function Loadeing() {
 								appState.socket.onGameEnd(dispatch);
 								appState.socket.getUserDataFromServer(dispatch);
 								appState.socket.getMatchMakeingDataFromServer(dispatch);
-								appState.socket.getUpdateCheckStatusFromServer(dispatch);
 								router("/match-make", { replace: true });
 							}, 1000);
 						}
 					}
 					clearInterval(timer);
 				}
-			}, 20);
+			}, 50);
 		};
 
 		const handleLoadPage = () => {
@@ -54,7 +58,7 @@ function Loadeing() {
 		return () => {
 			clearInterval(timer);
 		};
-	}, [widthRef.current, gameMode, router]);
+	}, [widthRef.current, _gameMode, router]);
 
 	return (
 		<main>

@@ -1,14 +1,5 @@
 import { io } from "socket.io-client";
-import {
-	gameInit,
-	updateBoard,
-	getUserData,
-	getMatchMakeingData,
-	gameEnd,
-	turnTimer,
-	gameTimer,
-	turnUpdate,
-} from "../arbitar/context/reducer/move";
+import { gameInit, updateBoard, getUserData, getMatchMakeingData, gameEnd, turnTimer, gameTimer, turnUpdate, animateBoard } from "../arbitar/context/reducer/move";
 class Client {
 	constructor(gameSceneInstance) {
 		this.gameSceneRefence = gameSceneInstance;
@@ -48,36 +39,40 @@ class Client {
 	getGameInitFromServer(dispatch) {
 		this.socket.on("game-start", (arg) => {
 			dispatch(gameInit({ arg }));
-			console.log("game start receive from server", arg);
+			console.log(arg);
 		});
 	}
 	getUpdateDetailsFromServer(dispatch) {
 		this.socket.on("update-details", (arg) => {
 			dispatch(updateBoard({ arg }));
-			console.log("Game Update Details From Server", arg);
+		});
+	}
+	getAnimateMoveFromServer(dispatch) {
+		this.socket.on("animate-move-details", (arg) => {
+			dispatch(animateBoard({ arg }));
 		});
 	}
 	onGmaeTime(dispatch) {
 		this.socket.on("gameTimer", (arg) => {
 			dispatch(gameTimer(arg));
-			// console.log("Game Timer From Server=============>", arg);
 		});
 	}
 	onTurnTimer(dispatch) {
 		this.socket.on("turnTimer", (arg) => {
 			dispatch(turnTimer(arg));
-			// console.log("GameTurnTimer From Server===========>", arg);
 		});
 	}
 	onTurnChange(dispatch) {
 		this.socket.on("game-updateTurn", (arg) => {
 			dispatch(turnUpdate(arg));
-			console.log("GameTurnTimer From Server===========>", arg);
 		});
 	}
 	onUpdateMove(cur_board) {
 		console.log(cur_board);
 		this.socket.emit("update-move", cur_board);
+	}
+	onAnimateMove(cur_board) {
+		this.socket.emit("animate-move", cur_board);
 	}
 	onUpdateWin(data) {
 		console.log("result", data);

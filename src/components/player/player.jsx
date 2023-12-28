@@ -11,7 +11,7 @@ function Player({ name, image }) {
 							src={image}
 							width={20}
 							height={20}
-							alt="image"
+							alt='image'
 							style={{
 								width: "72%",
 								height: "69%",
@@ -23,6 +23,7 @@ function Player({ name, image }) {
 					<div className={style.name_wrapper}>
 						<p
 							style={{
+								color: "#fff",
 								whiteSpace: "nowrap",
 								width: "60%",
 								overflow: "hidden",

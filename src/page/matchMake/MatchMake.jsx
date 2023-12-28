@@ -28,8 +28,8 @@ function MatchMackeing() {
 							<div className='match_make_title'></div>
 							{/*<--start::match making playr pic and op pic box ---->*/}
 							<div className='match_make_player'>
-								<Player name={appState?.pl?.user_name} image={appState?.pl?.profile} />
-								<Opponent name={appState?.op?.user_name} image={appState?.op?.profile} imageArray={imageArray} />
+								<Player name={appState?.pl?.user_name} image={appState?.pl?.profile || "/default.png"} />
+								<Opponent name={appState?.op?.user_name} image={appState?.op?.profile || "/default.png"} imageArray={imageArray} />
 								<span className='player_vs_op'></span>
 							</div>
 							{/*<--end::match making playr pic and op pic box ---->*/}

@@ -42,8 +42,10 @@
 .name_wrapper {
 	width: 100px;
 	height: 35px;
+
 	border: 2px solid bisque;
 	border-radius: 50px;
+	background-color: black;
 
 	display: flex;
 	align-items: center;

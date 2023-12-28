@@ -74,6 +74,7 @@ function Opponent({ name, image, imageArray }) {
 						{appState.status !== gameStatus.pending ? (
 							<p
 								style={{
+									color: "#fff",
 									whiteSpace: "nowrap",
 									width: "60%",
 									overflow: "hidden",
@@ -89,13 +90,14 @@ function Opponent({ name, image, imageArray }) {
 										<div key={idx} className={style.name_opponent}>
 											<p
 												style={{
+													color: "#fff",
 													whiteSpace: "nowrap",
 													width: "60%",
 													overflow: "hidden",
 													textAlign: "center",
 													textOverflow: "ellipsis",
 													fontWeight: 600,
-													color: "transparent",
+													// color: "transparent",
 													textShadow: "0 0 5px rgba(0,0,0,0.5)",
 												}}>
 												{el}
