@@ -31,7 +31,6 @@ function Loadeing() {
 							appState.socket.onRendomMatch();
 							dispatch(updateGameMode(gameMode.online));
 							setTimeout(() => {
-								dispatch();
 								appState.socket.getAnimateMoveFromServer(dispatch);
 								appState.socket.getUpdateDetailsFromServer(dispatch);
 								appState.socket.onGmaeTime(dispatch);
@@ -62,19 +61,19 @@ function Loadeing() {
 
 	return (
 		<main>
-			<div className='view_container'>
-				<div className='load_wrapper'>
-					<div className='load_background'>
-						<div className='inner_wrapper'>
-							<div className='title'></div>
-							<div className='loadeing_bg'>
-								<div className='loadeing_text'></div>
+			<div className="view_container">
+				<div className="load_wrapper">
+					<div className="load_background">
+						<div className="inner_wrapper">
+							<div className="title"></div>
+							<div className="loadeing_bg">
+								<div className="loadeing_text"></div>
 								<img
 									key={widthRef.current}
-									src='/loader/loading_bar.png'
+									src="/loader/loading_bar.png"
 									width={20}
 									height={30}
-									alt='loader'
+									alt="loader"
 									style={{
 										width: `${loadingWidth}%`,
 										objectFit: "cover",

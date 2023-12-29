@@ -1,6 +1,7 @@
 import { actionTypes, gameStatus, gameMode } from "./constant";
 
 let reducer = (state, action) => {
+	console.log(action, "current action");
 	switch (action.type) {
 		case actionTypes.GET_USER_DATA: {
 			const userData = {
@@ -82,11 +83,16 @@ let reducer = (state, action) => {
 
 		case actionTypes.UPDATE_TURN: {
 			const gameObject = action.payload;
-
+			let turn = "";
+			if (gameObject.turn) {
+				turn = gameObject.player.colour === "white" ? "r" : "y";
+			} else {
+				turn = gameObject.opponent.colour === "white" ? "r" : "y";
+			}
 			return {
 				...state,
 				totalTurnTime: Number(gameObject.turn_time),
-				turn: gameObject.turn && gameObject.player.colour === "white" ? "r" : "y",
+				turn: turn,
 			};
 		}
 		case actionTypes.GAME_END: {
@@ -106,23 +112,16 @@ let reducer = (state, action) => {
 			});
 			let status = "";
 			if (gameEndObj.winner) {
-				status = gameEndObj.player.colour === "black" ? gameStatus.r_win : gameStatus.y_win;
+				status = gameEndObj.player.colour === "white" ? gameStatus.r_win : gameStatus.y_win;
 			} else {
-				status = gameEndObj.opponent.colour === "black" ? gameStatus.r_win : gameStatus.y_win;
+				status = gameEndObj.opponent.colour === "white" ? gameStatus.r_win : gameStatus.y_win;
 			}
 			return {
 				...state,
 				status: status,
 			};
 		}
-		case actionTypes.UPDATE_TURN: {
-			const gameObject = action.payload;
-			return {
-				...state,
-				totalTurnTime: Number(gameObject.turn_time),
-				turn: gameObject.turn ? gameObject.player.colour.charAt(0).toLowerCase() : gameObject.opponent.colour.charAt(0).toLowerCase(),
-			};
-		}
+
 		case actionTypes.BOARD_UPDATE: {
 			let board = action.payload.arg.board;
 
@@ -190,16 +189,21 @@ let reducer = (state, action) => {
 					state.position.player2.value = action.payload.currentPosition;
 				}
 			}
-			if (state.position.player1.value > state.position.player2.value && state.position.player1.color === "r") {
+			if (
+				state.position.player1.value > state.position.player2.value &&
+				state.position.player1.color === "r"
+			) {
 				advantage = state.position.player1.value - state.position.player2.value;
 				advantageStatus = "r";
 			} else {
-				if (state.position.player1.value > state.position.player2.value && state.position.player1.color === "y") {
+				if (
+					state.position.player1.value > state.position.player2.value &&
+					state.position.player1.color === "y"
+				) {
 					advantage = state.position.player1.value - state.position.player2.value;
 					advantageStatus = "y";
 				}
 			}
-			console.log(advantage, "advantage ", state.position.player1.color);
 
 			if (state.mode === gameMode.online) {
 				state.socket.onUpdateMove({
@@ -210,7 +214,10 @@ let reducer = (state, action) => {
 					},
 					game_state: {
 						status: state.status,
-						advantage: advantage === 0 || state.position.player1.value === state.position.player2.value ? "Niether Side " : advantageStatus,
+						advantage:
+							advantage === 0 || state.position.player1.value === state.position.player2.value
+								? "Niether Side "
+								: advantageStatus,
 					},
 				});
 			}
@@ -231,11 +238,17 @@ let reducer = (state, action) => {
 					state.position.player2.value = action.payload.currentPosition;
 				}
 			}
-			if (state.position.player1.value > state.position.player2.value && state.position.player1.color === "r") {
+			if (
+				state.position.player1.value > state.position.player2.value &&
+				state.position.player1.color === "r"
+			) {
 				advantage = state.position.player1.value - state.position.player2.value;
 				advantageStatus = "r";
 			} else {
-				if (state.position.player1.value > state.position.player2.value && state.position.player1.color === "y") {
+				if (
+					state.position.player1.value > state.position.player2.value &&
+					state.position.player1.color === "y"
+				) {
 					advantage = state.position.player1.value - state.position.player2.value;
 					advantageStatus = "y";
 				}
@@ -250,7 +263,10 @@ let reducer = (state, action) => {
 					},
 					game_state: {
 						status: state.status,
-						advantage: advantage === 0 || state.position.player1.value === state.position.player2.value ? "Niether Side " : advantageStatus,
+						advantage:
+							advantage === 0 || state.position.player1.value === state.position.player2.value
+								? "Niether Side "
+								: advantageStatus,
 					},
 				});
 			}

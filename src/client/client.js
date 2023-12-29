@@ -1,5 +1,15 @@
 import { io } from "socket.io-client";
-import { gameInit, updateBoard, getUserData, getMatchMakeingData, gameEnd, turnTimer, gameTimer, turnUpdate, animateBoard } from "../arbitar/context/reducer/move";
+import {
+	gameInit,
+	updateBoard,
+	getUserData,
+	getMatchMakeingData,
+	gameEnd,
+	turnTimer,
+	gameTimer,
+	turnUpdate,
+	animateBoard,
+} from "../arbitar/context/reducer/move";
 class Client {
 	constructor(gameSceneInstance) {
 		this.gameSceneRefence = gameSceneInstance;
@@ -34,22 +44,25 @@ class Client {
 	getMatchMakeingDataFromServer(dispatch) {
 		this.socket.on("matchmacking-data", (arg) => {
 			dispatch(getMatchMakeingData(arg));
+			// console.log("match makeing data from server", arg);
 		});
 	}
 	getGameInitFromServer(dispatch) {
 		this.socket.on("game-start", (arg) => {
 			dispatch(gameInit({ arg }));
-			console.log(arg);
+			// console.log("game start data from server", arg);
 		});
 	}
 	getUpdateDetailsFromServer(dispatch) {
 		this.socket.on("update-details", (arg) => {
 			dispatch(updateBoard({ arg }));
+			// console.log("updated board from server", arg);
 		});
 	}
 	getAnimateMoveFromServer(dispatch) {
 		this.socket.on("animate-move-details", (arg) => {
 			dispatch(animateBoard({ arg }));
+			// console.log("animate move details from server", arg);
 		});
 	}
 	onGmaeTime(dispatch) {
@@ -60,11 +73,13 @@ class Client {
 	onTurnTimer(dispatch) {
 		this.socket.on("turnTimer", (arg) => {
 			dispatch(turnTimer(arg));
+			// console.log("turn timer from server", arg);
 		});
 	}
 	onTurnChange(dispatch) {
 		this.socket.on("game-updateTurn", (arg) => {
 			dispatch(turnUpdate(arg));
+			// console.log("updated turn from server", arg);
 		});
 	}
 	onUpdateMove(cur_board) {
@@ -91,6 +106,7 @@ class Client {
 	onGameEnd(dispatch) {
 		this.socket.on("game-end", (arg) => {
 			dispatch(gameEnd(arg));
+			console.log("game end data from server", arg);
 		});
 	}
 }

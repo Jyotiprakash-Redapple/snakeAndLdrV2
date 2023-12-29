@@ -22,13 +22,15 @@ var soundPlay = true;
 
 function PlayWithPlayer() {
 	const [quitGame, setQuitGame] = useState(false);
+	const [animate, setAnimate] = useState(false);
+	const diceRef = useRef();
 
 	const router = useNavigate();
-	// const { appState, dispatch } = useAppContext();
+	const { appState, dispatch } = useAppContext();
 	const handelQuitGame = () => {
-		// if (appState.socket) {
-		// 	appState.socket.emitDisConnect();
-		// }
+		if (appState.socket) {
+			appState.socket.emitDisConnect();
+		}
 	};
 	/**
 	 * function for calculkate progress bar
@@ -52,11 +54,6 @@ function PlayWithPlayer() {
 		return Math.abs(1 - value) < epsilon;
 	}
 
-	const [animate, setAnimate] = useState(false);
-
-	const { appState, dispatch } = useAppContext();
-
-	const diceRef = useRef();
 	/**
 	 *
 	 * @param {*} player_turn
@@ -160,6 +157,7 @@ function PlayWithPlayer() {
 		}
 
 		dispatch(makeNewMove({ player_turn, currentPosition }));
+		setAnimate(false);
 	};
 
 	const animatePawn = async (turn, player, position, x, y) => {
@@ -193,23 +191,28 @@ function PlayWithPlayer() {
 		}
 	}
 
-	let pointerStatus = () => {
-		return appState.position?.player1?.color === appState?.turn && !animate && appState.status !== gameStatus.r_win && appState.status !== gameStatus.y_win ? "auto" : "none";
-	};
+	// let pointerStatus = () => {
+	// 	return appState.position?.player1?.color === appState?.turn &&
+	// 		!animate &&
+	// 		appState.status !== gameStatus.r_win &&
+	// 		appState.status !== gameStatus.y_win
+	// 		? "auto"
+	// 		: "none";
+	// };
 	useLayoutEffect(() => {
 		localStorage.removeItem("GAME_START_SNLIO");
 	}, []);
-
+	// console.log(appState, "current appp state");
 	return (
 		<main>
-			<div className='view_container'>
+			<div className="view_container">
 				{/*<--start::play with player wrapper---->*/}
-				<div className='play_wrapper'>
+				<div className="play_wrapper">
 					{/*<--start::bg screen---->*/}
-					<div className='player_bg'>
+					<div className="player_bg">
 						{/*<--start::timer back ---->*/}
 
-						<span className='global_timer'>
+						<span className="global_timer">
 							<strong
 								style={{
 									color: "#FFF",
@@ -217,43 +220,50 @@ function PlayWithPlayer() {
 								{moment.utc(appState?.gameTime * 1000).format("mm:ss")}
 							</strong>
 						</span>
-						<span className='quit_game'></span>
-						<span className='sound_game off'></span>
-						<span className='pawn_click'>
-							<div className='role'>
-								<span className={`role_btn ${pointerStatus === "auto" ? "active" : ""}`} style={{ pointerEvents: pointerStatus }} onClick={handelRollDice}></span>
+						<span className="quit_game" onClick={() => setQuitGame(true)}></span>
+						<span className="sound_game off"></span>
+						<span className="pawn_click">
+							<div className="role">
+								<span
+									className={`role_btn ${
+										appState.position?.player1?.color === appState?.turn && !animate ? "active" : ""
+									}`}
+									style={{
+										pointerEvents: appState.position?.player1?.color === appState?.turn && !animate ? "auto" : "none",
+									}}
+									onClick={handelRollDice}></span>
 							</div>
-							<div className='turn_role_text'>
+							<div className="turn_role_text">
 								<strong
 									style={{
 										color: "#FFF",
 									}}>
-									Your Turn
+									{appState.position?.player1?.color === appState?.turn && !animate ? "Your Turn" : "Opponent Turn"}
 								</strong>
 							</div>
 						</span>
 						{/*<--start::timer back ---->*/}
 						{quitGame && (
-							<div className='quit_game_bg'>
-								<div className='quit_game_wrapper'>
-									<div className='quit_game_text'></div>
-									<div className='quit_game_btn'>
+							<div className="quit_game_bg">
+								<div className="quit_game_wrapper">
+									<div className="quit_game_text">Do You Want To Quit ?</div>
+									<div className="quit_game_btn">
 										{" "}
-										<button className='yes' onClick={() => handelQuitGame()}>
+										<button className="yes" onClick={() => handelQuitGame()}>
 											Yes
 										</button>
-										<button className='no' onClick={() => setQuitGame(false)}>
+										<button className="no" onClick={() => setQuitGame(false)}>
 											No
 										</button>
 									</div>
 								</div>
 							</div>
 						)}
-						<div className='inner_wrapper'>
-							<div className='top_sesc'>
-								<div className='left_base'>
-									<div className='player_name'>
-										<div className='name'>
+						<div className="inner_wrapper">
+							<div className="top_sesc">
+								<div className="left_base">
+									<div className="player_name">
+										<div className="name">
 											<p
 												style={{
 													color: "#fff",
@@ -264,10 +274,10 @@ function PlayWithPlayer() {
 													textAlign: "center",
 													textOverflow: "ellipsis",
 												}}>
-												Jack
+												{appState.pl?.user_name}
 											</p>
 										</div>
-										{appState.pl.id === appState.turnTime.current_player_id && appState.turnTime.life ? (
+										{appState?.pl.id === appState.turnTime.current_player_id && appState.turnTime.life ? (
 											<>
 												<div style={{ position: "absolute", top: "-8px", left: 0 }}>
 													{appState?.pl?.id === appState.turnTime.current_player_id && !appState.turnTime.life ? (
@@ -276,13 +286,13 @@ function PlayWithPlayer() {
 														<IoMdHeart style={{ color: "#ED5AB3", fontSize: "23px" }} />
 													)}
 												</div>
-												<div className='turn_bar_bg'>
-													<div className='turn_bar_inActive_bg'>
+												<div className="turn_bar_bg">
+													<div className="turn_bar_inActive_bg">
 														<img
-															src='/game_play/time_bar.png'
+															src="/game_play/time_bar.png"
 															width={20}
 															height={30}
-															alt='loader'
+															alt="loader"
 															style={{
 																height: "7px",
 																width: `${updateProgressBar(appState.turnTime.counter)}%`,
@@ -295,12 +305,15 @@ function PlayWithPlayer() {
 												</div>
 											</>
 										) : (
-											<></>
+											<>
+												{" "}
+												<div className="turn_bar_bg"></div>
+											</>
 										)}
 									</div>
-									<div className='player_profile'>
+									<div className="player_profile">
 										<img
-											src='/logo192.png'
+											src={`${appState.pl?.profile || "/default.png"}`}
 											style={{
 												objectFit: "contain",
 												width: "90%",
@@ -309,10 +322,10 @@ function PlayWithPlayer() {
 											}}></img>
 									</div>
 								</div>
-								<div className='dise_base'>
+								<div className="dise_base">
 									{" "}
 									<div
-										className='dice_movement'
+										className="dice_movement"
 										style={{
 											cursor: "pointer",
 											position: "relative",
@@ -327,22 +340,27 @@ function PlayWithPlayer() {
 											ref={diceRef}
 											disableIndividual
 											// disableRandom
-											faceColor={appState.turn === "r" ? "radial-gradient(rgb(255, 60, 60), rgb(180, 0, 0))" : "radial-gradient(rgb(255, 245, 60), rgb(180, 162, 0))"}
-											dotColor='#fff'
+											faceColor={
+												appState.turn === "r"
+													? "radial-gradient(rgb(255, 60, 60), rgb(180, 0, 0))"
+													: "radial-gradient(rgb(255, 245, 60), rgb(180, 162, 0))"
+											}
+											dotColor="#fff"
 											dieSize={20}
 											rollDone={(val) => {
 												let start = localStorage.getItem("GAME_START_SNLIO");
 												if (start) {
+													console.log("game start from dice rule");
 													movePlayer(appState?.turn, val);
 												}
 											}}
 										/>
 									</div>
 								</div>
-								<div className='right_base'>
-									<div className='player_profile' style={{ marginLeft: "7px" }}>
+								<div className="right_base">
+									<div className="player_profile" style={{ marginLeft: "7px" }}>
 										<img
-											src='/logo192.png'
+											src={`${appState.op?.profile || "/default.png"}`}
 											style={{
 												objectFit: "contain",
 												width: "90%",
@@ -351,8 +369,8 @@ function PlayWithPlayer() {
 											}}></img>
 									</div>
 
-									<div className='player_name'>
-										<div className='name'>
+									<div className="player_name">
+										<div className="name">
 											<p
 												style={{
 													color: "#fff",
@@ -363,7 +381,7 @@ function PlayWithPlayer() {
 													textAlign: "center",
 													textOverflow: "ellipsis",
 												}}>
-												Jack
+												{appState.op?.user_name}
 											</p>
 										</div>
 										{appState.op.id === appState.turnTime.current_player_id && appState.turnTime.life ? (
@@ -375,16 +393,16 @@ function PlayWithPlayer() {
 														<IoMdHeart style={{ color: "#ED5AB3", fontSize: "23px" }} />
 													)}
 												</div>
-												<div className='turn_bar_bg'>
-													<div className='turn_bar_inActive_bg'>
+												<div className="turn_bar_bg">
+													<div className="turn_bar_inActive_bg">
 														<img
-															src='/game_play/time_bar.png'
+															src="/game_play/time_bar.png"
 															width={20}
 															height={30}
-															alt='loader'
+															alt="loader"
 															style={{
 																height: "7px",
-																// width: `${loadingWidth}%`,
+																width: `${updateProgressBar(appState.turnTime.counter)}%`,
 																objectFit: "cover",
 
 																borderRadius: "10px",
@@ -394,13 +412,15 @@ function PlayWithPlayer() {
 												</div>{" "}
 											</>
 										) : (
-											<></>
+											<>
+												<div className="turn_bar_bg"></div>
+											</>
 										)}
 									</div>
 								</div>
 							</div>
-							<div className='btm_sesc'>
-								<div className='gameBoard'>
+							<div className="btm_sesc">
+								<div className="gameBoard">
 									<Board playerPositions={appState.position} turn={appState.turn} />
 								</div>
 							</div>

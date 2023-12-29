@@ -5,7 +5,7 @@ import useWindowDimension from "../../arbitar/hook/useWindowDimensions";
 const Pawn = animated(({ position, player, parent_position }) => {
 	const [view_port, _] = useState(useWindowDimension());
 	const device = generateArea(32);
-	console.log(position, player, parent_position, "snake and ladder");
+
 	const getPawnSize = () => {
 		// if (view_port.width <= 600) {
 		// 	return parent_position.player1.value === parent_position.player2.value ? "30px" : "40px";

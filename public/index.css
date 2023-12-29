@@ -211,8 +211,20 @@ html::before {
 	justify-content: center;
 }
 
-.player_bg > .inner_wrapper > .top_sesc > .left_base > .player_name > .turn_bar_bg > .turn_bar_inActive_bg,
-.player_bg > .inner_wrapper > .top_sesc > .right_base > .player_name > .turn_bar_bg > .turn_bar_inActive_bg {
+.player_bg
+	> .inner_wrapper
+	> .top_sesc
+	> .left_base
+	> .player_name
+	> .turn_bar_bg
+	> .turn_bar_inActive_bg,
+.player_bg
+	> .inner_wrapper
+	> .top_sesc
+	> .right_base
+	> .player_name
+	> .turn_bar_bg
+	> .turn_bar_inActive_bg {
 	width: 80%;
 	height: 7px;
 	display: flex;
@@ -407,18 +419,19 @@ html::before {
 	left: 0;
 	z-index: 1000;
 	position: absolute;
-	background-image: url("/gameQuit/layer.png");
-	background-size: cover;
+	/* background-image: url("/gameQuit/layer.png");
+	background-size: cover; */
+	background-color: #fff0f007;
 	background-repeat: no-repeat;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 }
 .quit_game_wrapper {
-	width: 350px;
+	width: 231px;
 	height: 245px;
 
-	background-image: url("/gameQuit/banner.png");
+	background-image: url("/quit_game/Base.png");
 	background-size: contain;
 	background-repeat: no-repeat;
 
@@ -428,11 +441,13 @@ html::before {
 	justify-content: center;
 }
 .quit_game_text {
-	width: 250px;
+	width: 170px;
 	height: 40px;
-	background-image: url("/gameQuit/do_you_want_quit.png");
+	color: #000;
+	font-weight: 300;
+	/* background-image: url("/gameQuit/do_you_want_quit.png");
 	background-size: contain;
-	background-repeat: no-repeat;
+	background-repeat: no-repeat; */
 }
 .quit_game_btn {
 	width: 60%;
@@ -461,11 +476,17 @@ html::before {
 }
 
 .yes {
-	background-color: #4caf50;
+	/* background-color: #4caf50; */
+	background-image: url("/quit_game/Button_1.png");
+	background-size: contain;
+	background-repeat: no-repeat;
 }
 
 .no {
-	background-color: #ff4444;
+	/* background-color: #ff4444; */
+	background-image: url("/quit_game/button_2.png");
+	background-size: contain;
+	background-repeat: no-repeat;
 }
 /* ====================================== Loader Componenet Component ===============================*/
 .load_background {
