@@ -9,7 +9,7 @@
 	-moz-osx-font-smoothing: grayscale;
 	-webkit-text-size-adjust: 100%;
 
-	--tile-size: 32px;
+	--tile-size: 30px;
 	--light-tiles: #72d0ff;
 	--dark-tiles: #4b74a3;
 	--high-light-tiles: #2417d3;
@@ -39,7 +39,8 @@ html::before {
 .play_wrapper,
 .load_wrapper {
 	position: relative;
-	width: 390px;
+	/* width: 390px; */
+	width: 346px;
 	height: 100%;
 	background-color: #000;
 	display: flex;
@@ -48,7 +49,7 @@ html::before {
 .splash_background {
 	width: 100%;
 	height: 100%;
-	background-image: url("/splash/splash_art.png");
+	background-image: url("/asset/splash/splash_art.png");
 	background-size: cover !important;
 	background-repeat: no-repeat;
 }
@@ -58,8 +59,9 @@ html::before {
 	position: relative;
 	width: 100%;
 	height: 100%;
-	background-image: url("/game_play/bg.png");
-	background-size: cover;
+	max-height: 690px;
+	background-image: url("/asset/game_play/bg.png");
+	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
 
@@ -70,9 +72,10 @@ html::before {
 .global_timer {
 	width: 100%;
 	height: 20px;
-
+	font-size: 13px;
 	position: absolute;
-	top: 22px;
+	/* top: 23px; */
+	top: 19px;
 	left: 0;
 
 	display: flex;
@@ -82,31 +85,34 @@ html::before {
 .quit_game {
 	width: 30px;
 	height: 30px;
-	background-image: url("/game_play/back.png");
+	background-image: url("/asset/game_play/back.png");
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: contain;
 	position: absolute;
-	top: 70px;
-	left: 7px;
+	/* top: 65px;
+  left: 7px; */
+	top: 55px;
+	left: 5px;
 }
 .sound_game {
 	width: 30px;
 	height: 30px;
-
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: contain;
 	position: absolute;
-	top: 70px;
-	right: 7px;
+	/* top: 65px;
+  right: 7px; */
+	top: 55px;
+	right: 5px;
 }
 
 .sound_game.on {
-	background-image: url("/game_play/sound_on.png");
+	background-image: url("/asset/game_play/sound_on.png");
 }
 .sound_game.off {
-	background-image: url("/game_play/sound_off.png");
+	background-image: url("/asset/game_play/sound_off.png");
 }
 
 .pawn_click {
@@ -134,7 +140,7 @@ html::before {
 .pawn_click > div > .role_btn {
 	width: 150px;
 	height: 30px;
-	background-image: url("/game_play/Roll.png");
+	background-image: url("/asset/game_play/Roll.png");
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: contain;
@@ -149,11 +155,11 @@ html::before {
 .player_bg > .inner_wrapper {
 	width: 90%;
 	height: 65%;
-
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: space-around;
+	position: relative;
 }
 
 .player_bg > .inner_wrapper > .top_sesc {
@@ -175,7 +181,7 @@ html::before {
 	height: 100%;
 	width: 120px;
 
-	background-image: url("/game_play/Left_base.png");
+	background-image: url("/asset/game_play/Left_base.png");
 	background-repeat: no-repeat;
 	background-size: contain;
 
@@ -211,20 +217,8 @@ html::before {
 	justify-content: center;
 }
 
-.player_bg
-	> .inner_wrapper
-	> .top_sesc
-	> .left_base
-	> .player_name
-	> .turn_bar_bg
-	> .turn_bar_inActive_bg,
-.player_bg
-	> .inner_wrapper
-	> .top_sesc
-	> .right_base
-	> .player_name
-	> .turn_bar_bg
-	> .turn_bar_inActive_bg {
+.player_bg > .inner_wrapper > .top_sesc > .left_base > .player_name > .turn_bar_bg > .turn_bar_inActive_bg,
+.player_bg > .inner_wrapper > .top_sesc > .right_base > .player_name > .turn_bar_bg > .turn_bar_inActive_bg {
 	width: 80%;
 	height: 7px;
 	display: flex;
@@ -233,7 +227,7 @@ html::before {
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: contain;
-	background-image: url("./game_play/time_base.png");
+	background-image: url("./asset/game_play/time_base.png");
 }
 .player_bg > .inner_wrapper > .top_sesc > .left_base > .player_profile,
 .player_bg > .inner_wrapper > .top_sesc > .right_base > .player_profile {
@@ -241,7 +235,7 @@ html::before {
 	height: 47%;
 	margin-bottom: 2px;
 	margin-right: 7px;
-	background-image: url("/game_play/profile_rc.png");
+	background-image: url("./asset/game_play/profile_rc.png");
 	background-repeat: no-repeat;
 	background-size: contain;
 }
@@ -250,7 +244,7 @@ html::before {
 	height: 100%;
 	width: 120px;
 
-	background-image: url("/game_play/right_base.png");
+	background-image: url("./asset/game_play/right_base.png");
 	background-repeat: no-repeat;
 	background-size: contain;
 	display: flex;
@@ -261,7 +255,7 @@ html::before {
 .player_bg > .inner_wrapper > .top_sesc > .dise_base {
 	height: 80%;
 	width: 60px;
-	background-image: url("/game_play/dise_base.png");
+	background-image: url("./asset/game_play/dise_base.png");
 	background-repeat: no-repeat;
 	background-size: contain;
 
@@ -283,8 +277,10 @@ html::before {
 .game_board_img {
 	/* width: 372px;
 	height: 372px; */
-	width: 350px;
-	height: 350px;
+	/* width: 350px;
+  height: 350px; */
+	width: 100%;
+	height: 100%;
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -297,6 +293,10 @@ html::before {
 	position: absolute;
 	left: 0;
 	top: 0;
+	display: grid;
+	grid-template-columns: repeat(10, var(--tile-size));
+	grid-template-rows: repeat(10, var(--tile-size));
+	transition: all 0.3s ease-in-out;
 }
 .board_temp {
 	position: relative;
@@ -304,8 +304,17 @@ html::before {
 	grid-template-columns: repeat(10, var(--tile-size));
 	grid-template-rows: repeat(10, var(--tile-size));
 	transition: all 0.3s ease-in-out;
-	margin-bottom: 13px;
-	margin-right: 1px;
+	/* margin-bottom: 13px;
+  margin-right: 1px; */
+	/* background-color: #fff; */
+	width: 99%;
+	height: 99%;
+	/* top: 0;
+  left: 0; */
+	top: 12px;
+	left: 8px;
+	/* top: 0;
+  left: 0; */
 }
 
 .square {
@@ -338,31 +347,70 @@ html::before {
 	height: var(--tile-size);
 }
 .player.r {
-	background-image: url("/game_play/red.png");
+	background-image: url("/asset/game_play/red.png");
 	background-repeat: no-repeat;
 }
 .player.y {
-	background-image: url("/game_play/blue.png");
+	background-image: url("/asset/game_play/blue.png");
 	background-size: 90%;
 	background-repeat: no-repeat;
 }
 
 #pawn-player-1 {
-	background-image: url("/game_play/red.png");
+	background-image: url("/asset/game_play/red.png");
 	background-repeat: no-repeat;
 	transition: all 0.3s ease-in-out;
 }
 #pawn-player-2 {
-	background-image: url("/game_play/blue.png");
+	background-image: url("/asset/game_play/blue.png");
 
 	background-repeat: no-repeat;
 	transition: all 0.3s ease-in-out;
 }
+
+/* ================================ popup Component =============================*/
+.popup {
+	width: 100%;
+	height: 100%;
+	z-index: 1000000000000000000000;
+	right: 0;
+	top: 0;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	background: transparent;
+	background-image: url("/asset/quit_game/layer.png");
+}
+.popup--inner {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.popup--inner > .wins {
+	width: 100%;
+	height: 100%;
+	background-size: cover;
+
+	background-repeat: no-repeat;
+	background-image: url("/asset/status/win_banner.png");
+}
+.popup--inner > .defect {
+	width: 100%;
+	height: 100%;
+	background-size: cover;
+	background-repeat: no-repeat;
+
+	background-image: url("/asset/status/defect_banner.png");
+}
+
 /* ================================ matchMaking Component =============================*/
 .search_banner_bg {
 	width: 100%;
 	height: 100%;
-	background-image: url("/match_make/BG.png");
+	background-image: url("/asset/match_make/BG.png");
 	background-size: cover !important;
 	background-repeat: no-repeat;
 
@@ -386,7 +434,7 @@ html::before {
 	background-repeat: no-repeat;
 	background-size: cover;
 
-	background-image: url("/match_make/Tag_base.png");
+	background-image: url("/asset/match_make/Tag_base.png");
 }
 .match_make_player {
 	width: 100%;
@@ -405,7 +453,7 @@ html::before {
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	background-image: url("/match_make/V_S.png");
+	background-image: url("/asset/match_make/V_S.png");
 	background-size: contain;
 	background-repeat: no-repeat;
 	z-index: 3;
@@ -419,8 +467,8 @@ html::before {
 	left: 0;
 	z-index: 1000;
 	position: absolute;
-	/* background-image: url("/gameQuit/layer.png");
-	background-size: cover; */
+	background-image: url("/asset/quit_game/layer.png");
+	background-size: cover;
 	background-color: #fff0f007;
 	background-repeat: no-repeat;
 	display: flex;
@@ -431,7 +479,7 @@ html::before {
 	width: 231px;
 	height: 245px;
 
-	background-image: url("/quit_game/Base.png");
+	background-image: url("/asset/quit_game/Base.png");
 	background-size: contain;
 	background-repeat: no-repeat;
 
@@ -477,22 +525,22 @@ html::before {
 
 .yes {
 	/* background-color: #4caf50; */
-	background-image: url("/quit_game/Button_1.png");
-	background-size: contain;
+	background-image: url("/asset/quit_game/Button_1.png");
+	background-size: cover;
 	background-repeat: no-repeat;
 }
 
 .no {
 	/* background-color: #ff4444; */
-	background-image: url("/quit_game/button_2.png");
-	background-size: contain;
+	background-image: url("/asset/quit_game/button_2.png");
+	background-size: cover;
 	background-repeat: no-repeat;
 }
 /* ====================================== Loader Componenet Component ===============================*/
 .load_background {
 	width: 100%;
 	height: 100%;
-	background-image: url("/loader/BG.png");
+	background-image: url("/asset/loader/BG.png");
 	background-repeat: no-repeat;
 	background-size: cover;
 	position: relative;
@@ -513,7 +561,7 @@ html::before {
 .load_background > .inner_wrapper > .title {
 	width: 250px;
 	height: 250px;
-	background-image: url("/loader/Title_art.png");
+	background-image: url("/asset/loader/Title_art.png");
 	background-repeat: no-repeat;
 	background-size: contain;
 }
@@ -521,7 +569,7 @@ html::before {
 	width: 70%;
 	height: 20px;
 	margin-bottom: 50px;
-	background-image: url("/loader/Loading_base.png");
+	background-image: url("/asset/loader/Loading_base.png");
 	background-repeat: no-repeat;
 	background-size: contain;
 	position: relative;
@@ -536,7 +584,7 @@ html::before {
 	transform: translate(-50%, -10%);
 	width: 120px;
 	height: 120px;
-	background-image: url("/loader/LOADING_.png");
+	background-image: url("/asset/loader/LOADING_.png");
 	background-repeat: no-repeat;
 	background-size: contain;
 }
@@ -567,6 +615,13 @@ html::before {
 		height: 50px !important;
 	}
 } */
+.turn_role_text {
+	text-transform: uppercase;
+	font-size: 12px;
+}
+.turn_role_text strong {
+	font-weight: 400;
+}
 
 @media only screen and (max-width: 600px) {
 	:root {
@@ -587,7 +642,7 @@ html::before {
 	.splash_background {
 		width: 100%;
 		height: 100%;
-		background-image: url("/splash/splash_art.png");
+		background-image: url("/asset/splash/splash_art.png");
 		background-size: contain !important;
 		background-repeat: no-repeat;
 	}
@@ -595,7 +650,7 @@ html::before {
 	.load_background {
 		width: 100%;
 		height: 100%;
-		background-image: url("/loader/BG.png");
+		background-image: url("/asset/loader/BG.png");
 		background-repeat: no-repeat;
 		background-size: contain !important;
 		position: relative;
@@ -603,9 +658,379 @@ html::before {
 	.player_bg {
 		width: 100%;
 		height: 100%;
-		background-image: url("/game_play/bg.png");
+		background-image: url("/asset/game_play/bg.png");
 		background-size: contain !important;
 		background-position: center;
 		background-repeat: no-repeat;
+	}
+}
+@media only screen and (max-width: 480px) {
+	:root {
+		--tile-size: 35px;
+	}
+	.play_wrapper {
+		align-items: center;
+	}
+	.player_bg {
+		max-height: 730px;
+	}
+	.player_bg > .inner_wrapper > .top_sesc > .left_base > .player_profile,
+	.player_bg > .inner_wrapper > .top_sesc > .right_base > .player_profile {
+		width: 20px;
+		height: 20px;
+		margin-bottom: 14px;
+		margin-right: 9px;
+		border-radius: 5px;
+		overflow: hidden;
+	}
+	.player_profile img {
+		width: 100% !important;
+		height: 100%;
+		border-radius: 0 !important;
+	}
+	.player_bg > .inner_wrapper > .top_sesc > .right_base > .player_profile {
+		margin-left: 9px !important;
+	}
+	.pawn_click > .role {
+		width: 100%;
+		height: 60px;
+	}
+	.pawn_click > div > .role_btn {
+		width: 93px;
+		height: 70px;
+		margin-top: 20px;
+	}
+	.sound_game,
+	.quit_game {
+		top: 68px;
+	}
+	.gameBoard,
+	.game_board_img {
+		width: 100%;
+		height: 100%;
+	}
+	.snakeLdr {
+		top: 14px;
+		left: 15px;
+		width: 91%;
+		height: 91%;
+	}
+}
+@media only screen and (max-width: 480px) {
+	.slr1 {
+		width: 61px !important;
+		top: 241px !important;
+		left: 123px !important;
+	}
+	.slr2 {
+		top: 106px !important;
+	}
+	.slr3 {
+		width: 65px !important;
+		top: 103px !important;
+		left: 211px !important;
+		z-index: 1;
+	}
+	.slr4 {
+		width: 60px !important;
+		top: 247px !important;
+		left: -4px !important;
+	}
+	.slr5 {
+		width: 58px !important;
+		top: 13px !important;
+		left: 239px !important;
+	}
+	.slr6 {
+		width: 62px !important;
+		left: 9px !important;
+	}
+	.slr7 {
+		width: 129px !important;
+		top: 58px !important;
+		left: 152px !important;
+	}
+	.ldr1 {
+		top: 21px !important;
+		height: 274px !important;
+		left: 110px !important;
+	}
+	.ldr2 {
+		width: 57px !important;
+		top: 161px !important;
+		left: 74px !important;
+		height: auto !important;
+	}
+	.ldr4top {
+		left: 12px !important;
+	}
+	.ldr4btm {
+		width: 67px !important;
+		top: 247px !important;
+		left: 279px !important;
+	}
+	.ldr3 {
+		width: 44px !important;
+		top: 127px !important;
+		left: 285px !important;
+	}
+}
+@media only screen and (max-width: 430px) {
+	.player_bg {
+		max-height: 755px;
+	}
+}
+@media only screen and (max-width: 414px) {
+	.player_bg {
+		max-height: 730px;
+	}
+}
+@media only screen and (max-width: 412px) {
+	.player_bg {
+		max-height: 724px;
+	}
+	.pawn_click {
+		width: 142px;
+	}
+}
+@media only screen and (max-width: 390px) {
+	.pawn_click {
+		bottom: 0px;
+		width: 130px;
+	}
+	.sound_game,
+	.quit_game {
+		top: 86px;
+	}
+	.global_timer {
+		top: 24px;
+	}
+	.player_bg {
+		max-height: 693px;
+	}
+	.ldr4btm {
+		width: 67px !important;
+		top: 232px !important;
+		left: 263px !important;
+	}
+	.ldr3 {
+		width: 44px !important;
+		top: 118px !important;
+		left: 267px !important;
+	}
+	.slr3 {
+		width: 65px !important;
+		top: 100px !important;
+		left: 199px !important;
+		z-index: 1;
+	}
+	.slr7 {
+		width: 129px !important;
+		top: 49px !important;
+		left: 148px !important;
+	}
+	.slr5 {
+		width: 58px !important;
+		top: 13px !important;
+		left: 220px !important;
+	}
+	.ldr1 {
+		top: 15px !important;
+		height: 267px !important;
+		left: 101px !important;
+	}
+	.ldr2 {
+		width: 57px !important;
+		top: 150px !important;
+		left: 68px !important;
+		height: auto !important;
+	}
+}
+@media only screen and (max-width: 390px) {
+	:root {
+		--tile-size: 33px;
+	}
+}
+@media only screen and (max-width: 380px) {
+	.global_timer {
+		top: 24px;
+	}
+	.sound_game,
+	.quit_game {
+		top: 65px;
+	}
+	:root {
+		--tile-size: 31px;
+	}
+	.slr1 {
+		width: 56px !important;
+		top: 221px !important;
+		left: 115px !important;
+	}
+	.slr3 {
+		width: 65px !important;
+		top: 93px !important;
+		left: 185px !important;
+		z-index: 1;
+	}
+	.slr4 {
+		width: 60px !important;
+		top: 221px !important;
+		left: -4px !important;
+	}
+	.slr5 {
+		width: 55px !important;
+		top: 10px !important;
+		left: 211px !important;
+	}
+	.slr6 {
+		width: 50px !important;
+		left: 11px !important;
+	}
+	.slr7 {
+		width: 112px !important;
+		top: 53px !important;
+		left: 141px !important;
+	}
+	.ldr1 {
+		top: 17px !important;
+		height: 251px !important;
+		left: 93px !important;
+	}
+	.ldr2 {
+		width: 52px !important;
+		top: 148px !important;
+		left: 66px !important;
+		height: auto !important;
+	}
+	.ldr4top {
+		left: 12px !important;
+	}
+	.ldr4btm {
+		width: 60px !important;
+		top: 227px !important;
+		left: 257px !important;
+	}
+	.ldr3 {
+		width: 39px !important;
+		top: 115px !important;
+		left: 257px !important;
+	}
+	.pawn_click {
+		bottom: 0px;
+		width: 122px;
+	}
+}
+@media only screen and (max-width: 375px) {
+	.player_bg {
+		max-height: 668px;
+	}
+}
+@media only screen and (max-width: 360px) {
+	.player_bg {
+		max-height: 643px;
+	}
+	.ldr4btm {
+		width: 60px !important;
+		top: 215px !important;
+		left: 242px !important;
+	}
+	.ldr3 {
+		width: 39px !important;
+		top: 109px !important;
+		left: 246px !important;
+	}
+	.ldr2 {
+		width: 52px !important;
+		top: 136px !important;
+		left: 66px !important;
+		height: auto !important;
+	}
+	.slr2 {
+		top: 85px !important;
+	}
+	.slr3 {
+		width: 65px !important;
+		top: 87px !important;
+		left: 173px !important;
+		z-index: 1;
+	}
+	.slr4 {
+		width: 60px !important;
+		top: 211px !important;
+		left: -4px !important;
+	}
+	.slr1 {
+		width: 56px !important;
+		top: 207px !important;
+		left: 105px !important;
+	}
+	.slr6 {
+		width: 53px !important;
+		left: 7px !important;
+		top: 70px !important;
+	}
+}
+@media only screen and (max-width: 320px) {
+	.slr4 {
+		width: 38px !important;
+	}
+	.slr1 {
+		width: 47px !important;
+		top: 187px !important;
+		left: 94px !important;
+	}
+	.ldr4top {
+		left: 4px !important;
+		top: 0px !important;
+	}
+	.ldr1 {
+		top: 12px !important;
+		height: 214px !important;
+		left: 82px !important;
+	}
+	.slr5 {
+		width: 55px !important;
+		top: 10px !important;
+		left: 173px !important;
+	}
+	.slr6 {
+		width: 53px !important;
+		left: 7px !important;
+		top: 59px !important;
+	}
+	.ldr6 {
+		width: 42px !important;
+		top: 90px !important;
+		left: 5px !important;
+	}
+	.slr2 {
+		top: 72px !important;
+		width: 103px !important;
+		left: 8px !important;
+	}
+	.ldr3 {
+		width: 39px !important;
+		top: 90px !important;
+		left: 215px !important;
+	}
+	.ldr4btm {
+		width: 51px !important;
+		top: 188px !important;
+		left: 213px !important;
+	}
+	.global_timer {
+		top: 17px;
+	}
+	.pawn_click {
+		width: 108px;
+	}
+	.pawn_click > div > .role_btn {
+		width: 69px;
+		height: 60px;
+		margin-top: 36px;
+	}
+	:root {
+		--tile-size: 26px;
 	}
 }

@@ -1,8 +1,8 @@
 let gameStatus = {
 	pending: "pending",
 	ongoing: "ongoing",
-	r_win: "red pawn win",
-	y_win: "yellow pawn win",
+	r_win: "red pawn wins",
+	y_win: "yellow pawn wins",
 };
 
 let gameMode = {
@@ -14,6 +14,8 @@ let gameMode = {
 /// white === player1 and black ==== player2
 let initGame = {
 	socket: null,
+	diceAnimate: false,
+	diceValue: "",
 	position: {},
 	turn: "",
 	status: gameStatus.pending,
@@ -27,6 +29,7 @@ let initGame = {
 Object.freeze(initGame);
 
 let actionTypes = {
+	CHANGE_TURN: "CHANGE_TURN",
 	ANIMATE_PAWN: "ANIMATE_PAWN",
 	ANIMATE_BOARD_UPDATE: "ANIMATE_BOARD_UPDATE",
 	GET_USER_DATA: "GET_USER_DATA",
@@ -43,6 +46,8 @@ let actionTypes = {
 	UPDATE_TURN: "UPDATE_TURN",
 	TURN_TIME: "TURN_TIME",
 	GAME_TIME: "GAME_TIME",
+	ANIMATE_DICE: "ANIMATE_DICE",
+	CURRENT_DICE: "CURRENT_DICE",
 	NEW_SOCKET_CONNECTION: "NEW_SOCKET_CONNECTION",
 };
 

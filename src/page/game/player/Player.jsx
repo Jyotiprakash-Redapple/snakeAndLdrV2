@@ -3,27 +3,42 @@ import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
 
 import Board from "../../../components/gameBoard";
 
-import { app } from "../../../config/appConfig";
 import { useAppContext } from "../../../arbitar/context/Provider";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { IoMdHeart } from "react-icons/io";
 import { FaHeartBroken } from "react-icons/fa";
-// import Popupbox from "../../../components/popup/popupbox";
-import { diceBorderColor, snakes, ladder, generateArea } from "../../../arbitar/helper";
+import Popupbox from "../../../components/popup/popupbox";
+import { snakes, ladder, generateArea, cordinate } from "../../../arbitar/helper";
 
-import { makeNewMove, dectateWin, makeAnimateMove } from "../../../arbitar/context/reducer/move";
-import { gameStatus } from "../../../arbitar/context/reducer/constant";
+import { makeNewMove, dectateWin, makeAnimateMove, animateDice, currentDice } from "../../../arbitar/context/reducer/move";
 
 import ReactDice from "react-dice-complete";
 import PawnMovementSound from "../../../audio/pawn_movement.mp3";
 import roolingSound from "../../../audio/rpg-dice-rolling-95182.mp3";
+import { gameStatus } from "../../../arbitar/context/reducer/constant";
 var soundPlay = true;
-
+function getSize(width) {
+	if (width <= 320) {
+		return "xs";
+	} else if (width > 320 && width <= 380) {
+		return "sm";
+	} else if (width > 380 && width <= 390) {
+		return "md";
+	} else if (width > 390 && width <= 480) {
+		return "xl";
+	} else if (width > 480 && width <= 600) {
+		return "xxl";
+	} else {
+		return "root";
+	}
+}
 function PlayWithPlayer() {
 	const [quitGame, setQuitGame] = useState(false);
+	const [soundStatus, setSoundStatus] = useState(true);
 	const [animate, setAnimate] = useState(false);
 	const diceRef = useRef();
+	const diceAnimateRef = useRef();
 
 	const router = useNavigate();
 	const { appState, dispatch } = useAppContext();
@@ -61,7 +76,7 @@ function PlayWithPlayer() {
 	 * @function movePlayer
 	 * @description pawn movement logic
 	 */
-	function movePlayer(player_turn, diceRoll) {
+	async function movePlayer(player_turn, diceRoll) {
 		let currentPosition = 0;
 		setAnimate(true);
 
@@ -76,17 +91,18 @@ function PlayWithPlayer() {
 		}
 
 		for (let i = 1; i <= diceRoll; i++) {
-			setTimeout(() => {
+			setTimeout(async () => {
 				currentPosition += 1;
 
-				let soundSource = PawnMovementSound;
-				let sound = new Audio(soundSource);
-				sound.play();
-
+				if (soundStatus) {
+					let soundSource = PawnMovementSound;
+					let sound = new Audio(soundSource);
+					sound.play();
+				}
 				dispatch(
 					makeAnimateMove({
 						player_turn,
-						currentPosition: currentPosition <= 100 ? currentPosition : 100,
+						currentPosition: currentPosition <= 100 ? Number(currentPosition) : 100,
 					})
 				);
 				if (currentPosition >= 100) {
@@ -95,7 +111,8 @@ function PlayWithPlayer() {
 				}
 
 				if (i === diceRoll) {
-					handleSnakeAndLadder(player_turn, currentPosition);
+					await handleSnakeAndLadder(player_turn, currentPosition);
+					dispatch(currentDice({ animate: false, dice: "" }));
 				}
 			}, i * 225.5);
 		}
@@ -113,7 +130,8 @@ function PlayWithPlayer() {
 	const handleSnakeAndLadder = async (player_turn, position) => {
 		let currentPosition = position;
 		let player = player_turn === "r" ? "player-1" : "player-2";
-		const device = generateArea(32);
+
+		const device = cordinate["small"][getSize(window.innerWidth)];
 		if (snakes[position]?.length >= 1) {
 			const snakePositionArr = snakes[position];
 
@@ -157,7 +175,9 @@ function PlayWithPlayer() {
 		}
 
 		dispatch(makeNewMove({ player_turn, currentPosition }));
-		setAnimate(false);
+		setTimeout(() => {
+			setAnimate(false);
+		}, 1000);
 	};
 
 	const animatePawn = async (turn, player, position, x, y) => {
@@ -178,41 +198,61 @@ function PlayWithPlayer() {
 		localStorage.setItem("GAME_START_SNLIO", "1");
 		var should_play = true;
 		if (!animate) {
+			dispatch(animateDice(true));
 			diceRef?.current?.rollAll();
-			if (should_play) {
-				should_play = !should_play;
-				let soundSource = roolingSound;
-				let sound = new Audio(soundSource);
-				sound.play();
-				sound.onended = () => {
-					should_play = true;
-				};
+			console.log("diceRef", diceRef);
+			if (soundStatus) {
+				if (should_play) {
+					should_play = !should_play;
+					let soundSource = roolingSound;
+					let sound = new Audio(soundSource);
+					sound.play();
+					sound.onended = () => {
+						should_play = true;
+					};
+				}
 			}
 		}
 	}
+	function handelAutoRollDice() {
+		localStorage.setItem("GAME_START_SNLIO", "1");
+		var should_play = true;
+		if (!animate) {
+			diceAnimateRef?.current?.rollAll();
 
-	// let pointerStatus = () => {
-	// 	return appState.position?.player1?.color === appState?.turn &&
-	// 		!animate &&
-	// 		appState.status !== gameStatus.r_win &&
-	// 		appState.status !== gameStatus.y_win
-	// 		? "auto"
-	// 		: "none";
-	// };
+			console.log(diceAnimateRef.current, "animate dice====>");
+			if (soundStatus) {
+				if (should_play) {
+					// should_play = !should_play;
+					// let soundSource = roolingSound;
+					// let sound = new Audio(soundSource);
+					// sound.play();
+					// sound.onended = () => {
+					// 	should_play = true;
+					// };
+				}
+			}
+		}
+	}
 	useLayoutEffect(() => {
 		localStorage.removeItem("GAME_START_SNLIO");
 	}, []);
 	// console.log(appState, "current appp state");
+	useEffect(() => {
+		if (appState.diceAnimate === true) {
+			handelAutoRollDice();
+		}
+	}, [appState.diceAnimate]);
 	return (
 		<main>
-			<div className="view_container">
+			<div className='view_container'>
 				{/*<--start::play with player wrapper---->*/}
-				<div className="play_wrapper">
+				<div className='play_wrapper'>
 					{/*<--start::bg screen---->*/}
-					<div className="player_bg">
+					<div className='player_bg'>
 						{/*<--start::timer back ---->*/}
 
-						<span className="global_timer">
+						<span className='global_timer'>
 							<strong
 								style={{
 									color: "#FFF",
@@ -220,20 +260,32 @@ function PlayWithPlayer() {
 								{moment.utc(appState?.gameTime * 1000).format("mm:ss")}
 							</strong>
 						</span>
-						<span className="quit_game" onClick={() => setQuitGame(true)}></span>
-						<span className="sound_game off"></span>
-						<span className="pawn_click">
-							<div className="role">
-								<span
-									className={`role_btn ${
-										appState.position?.player1?.color === appState?.turn && !animate ? "active" : ""
-									}`}
-									style={{
-										pointerEvents: appState.position?.player1?.color === appState?.turn && !animate ? "auto" : "none",
-									}}
-									onClick={handelRollDice}></span>
+						<span className='quit_game' onClick={() => setQuitGame(true)}></span>
+						<span
+							className={`sound_game ${soundStatus ? "on" : "off"} `}
+							onClick={() => {
+								setSoundStatus(!soundStatus);
+							}}></span>
+						<span className='pawn_click'>
+							<div className='role'>
+								{appState.animate ? (
+									<span
+										className={`role_btn ${appState.position?.player1?.color === appState?.turn && !animate ? "active" : ""}`}
+										style={{
+											pointerEvents:
+												appState.position?.player1?.color === appState?.turn && !animate && appState.status !== gameStatus.r_win && appState.status !== gameStatus.y_win ? "auto" : "none",
+										}}></span>
+								) : (
+									<span
+										className={`role_btn ${appState.position?.player1?.color === appState?.turn && !animate ? "active" : ""}`}
+										style={{
+											pointerEvents:
+												appState.position?.player1?.color === appState?.turn && !animate && appState.status !== gameStatus.r_win && appState.status !== gameStatus.y_win ? "auto" : "none",
+										}}
+										onClick={handelRollDice}></span>
+								)}
 							</div>
-							<div className="turn_role_text">
+							<div className='turn_role_text'>
 								<strong
 									style={{
 										color: "#FFF",
@@ -244,26 +296,26 @@ function PlayWithPlayer() {
 						</span>
 						{/*<--start::timer back ---->*/}
 						{quitGame && (
-							<div className="quit_game_bg">
-								<div className="quit_game_wrapper">
-									<div className="quit_game_text">Do You Want To Quit ?</div>
-									<div className="quit_game_btn">
+							<div className='quit_game_bg'>
+								<div className='quit_game_wrapper'>
+									<div className='quit_game_text'>Do You Want To Quit ?</div>
+									<div className='quit_game_btn'>
 										{" "}
-										<button className="yes" onClick={() => handelQuitGame()}>
+										<button className='yes' onClick={() => handelQuitGame()}>
 											Yes
 										</button>
-										<button className="no" onClick={() => setQuitGame(false)}>
+										<button className='no' onClick={() => setQuitGame(false)}>
 											No
 										</button>
 									</div>
 								</div>
 							</div>
 						)}
-						<div className="inner_wrapper">
-							<div className="top_sesc">
-								<div className="left_base">
-									<div className="player_name">
-										<div className="name">
+						<div className='inner_wrapper'>
+							<div className='top_sesc'>
+								<div className='left_base'>
+									<div className='player_name'>
+										<div className='name'>
 											<p
 												style={{
 													color: "#fff",
@@ -277,6 +329,7 @@ function PlayWithPlayer() {
 												{appState.pl?.user_name}
 											</p>
 										</div>
+
 										{appState?.pl.id === appState.turnTime.current_player_id && appState.turnTime.life ? (
 											<>
 												<div style={{ position: "absolute", top: "-8px", left: 0 }}>
@@ -286,13 +339,13 @@ function PlayWithPlayer() {
 														<IoMdHeart style={{ color: "#ED5AB3", fontSize: "23px" }} />
 													)}
 												</div>
-												<div className="turn_bar_bg">
-													<div className="turn_bar_inActive_bg">
+												<div className='turn_bar_bg'>
+													<div className='turn_bar_inActive_bg'>
 														<img
-															src="/game_play/time_bar.png"
+															src='/asset/game_play/time_bar.png'
 															width={20}
 															height={30}
-															alt="loader"
+															alt='loader'
 															style={{
 																height: "7px",
 																width: `${updateProgressBar(appState.turnTime.counter)}%`,
@@ -307,13 +360,13 @@ function PlayWithPlayer() {
 										) : (
 											<>
 												{" "}
-												<div className="turn_bar_bg"></div>
+												<div className='turn_bar_bg'></div>
 											</>
 										)}
 									</div>
-									<div className="player_profile">
+									<div className='player_profile'>
 										<img
-											src={`${appState.pl?.profile || "/default.png"}`}
+											src={`${appState?.pl?.profile || "/default.png"}`}
 											style={{
 												objectFit: "contain",
 												width: "90%",
@@ -322,10 +375,10 @@ function PlayWithPlayer() {
 											}}></img>
 									</div>
 								</div>
-								<div className="dise_base">
+								<div className='dise_base'>
 									{" "}
 									<div
-										className="dice_movement"
+										className='dice_movement'
 										style={{
 											cursor: "pointer",
 											position: "relative",
@@ -334,33 +387,71 @@ function PlayWithPlayer() {
 											alignItems: "center",
 											justifyContent: "center",
 										}}>
-										<ReactDice
-											numDice={1}
-											rollTime={1}
-											ref={diceRef}
-											disableIndividual
-											// disableRandom
-											faceColor={
-												appState.turn === "r"
-													? "radial-gradient(rgb(255, 60, 60), rgb(180, 0, 0))"
-													: "radial-gradient(rgb(255, 245, 60), rgb(180, 162, 0))"
-											}
-											dotColor="#fff"
-											dieSize={20}
-											rollDone={(val) => {
-												let start = localStorage.getItem("GAME_START_SNLIO");
-												if (start) {
-													console.log("game start from dice rule");
-													movePlayer(appState?.turn, val);
-												}
-											}}
-										/>
+										{appState.diceAnimate ? (
+											<>
+												{appState.diceAnimate === false && appState.diceValue ? (
+													<ReactDice
+														numDice={1}
+														rollTime={4}
+														ref={diceAnimateRef}
+														disableIndividual
+														// disableRandom
+														faceColor={appState.turn === "r" ? "radial-gradient(rgb(255, 60, 60), rgb(180, 0, 0))" : "radial-gradient(rgb(0 202 235), rgb(0 145 180))"}
+														dotColor='#fff'
+														dieSize={20}
+														defaultRoll={appState.diceValue}
+														rollDone={(val) => {
+															let start = localStorage.getItem("GAME_START_SNLIO");
+															// if (start) {
+															// 	movePlayer(appState?.turn, val);
+															// }
+														}}
+													/>
+												) : (
+													<ReactDice
+														numDice={1}
+														rollTime={4}
+														ref={diceAnimateRef}
+														disableIndividual
+														// disableRandom
+														faceColor={appState.turn === "r" ? "radial-gradient(rgb(255, 60, 60), rgb(180, 0, 0))" : "radial-gradient(rgb(0 202 235), rgb(0 145 180))"}
+														dotColor='#fff'
+														dieSize={20}
+														// defaultRoll={appState.diceValue}
+														rollDone={(val) => {
+															let start = localStorage.getItem("GAME_START_SNLIO");
+															// if (start) {
+															// 	movePlayer(appState?.turn, val);
+															// }
+														}}
+													/>
+												)}
+											</>
+										) : (
+											<ReactDice
+												numDice={1}
+												rollTime={4}
+												ref={diceRef}
+												disableIndividual
+												// disableRandom
+												faceColor={appState.turn === "r" ? "radial-gradient(rgb(255, 60, 60), rgb(180, 0, 0))" : "radial-gradient(rgb(0 202 235), rgb(0 145 180))"}
+												dotColor='#fff'
+												dieSize={20}
+												rollDone={(val) => {
+													let start = localStorage.getItem("GAME_START_SNLIO");
+													if (start) {
+														dispatch(currentDice({ animate: false, dice: val }));
+														movePlayer(appState?.turn, val);
+													}
+												}}
+											/>
+										)}
 									</div>
 								</div>
-								<div className="right_base">
-									<div className="player_profile" style={{ marginLeft: "7px" }}>
+								<div className='right_base'>
+									<div className='player_profile' style={{ marginLeft: "7px" }}>
 										<img
-											src={`${appState.op?.profile || "/default.png"}`}
+											src={`${appState?.op?.profile || "/default.png"}`}
 											style={{
 												objectFit: "contain",
 												width: "90%",
@@ -369,8 +460,8 @@ function PlayWithPlayer() {
 											}}></img>
 									</div>
 
-									<div className="player_name">
-										<div className="name">
+									<div className='player_name'>
+										<div className='name'>
 											<p
 												style={{
 													color: "#fff",
@@ -384,22 +475,28 @@ function PlayWithPlayer() {
 												{appState.op?.user_name}
 											</p>
 										</div>
+
 										{appState.op.id === appState.turnTime.current_player_id && appState.turnTime.life ? (
 											<>
-												<div style={{ position: "absolute", top: "-8px", right: 0 }}>
+												<div
+													style={{
+														position: "absolute",
+														top: "-8px",
+														right: 0,
+													}}>
 													{appState.pl.id === appState.turnTime.current_player_id && !appState.turnTime.life ? (
 														<FaHeartBroken style={{ color: "#ED5AB3", fontSize: "23px" }} />
 													) : (
 														<IoMdHeart style={{ color: "#ED5AB3", fontSize: "23px" }} />
 													)}
 												</div>
-												<div className="turn_bar_bg">
-													<div className="turn_bar_inActive_bg">
+												<div className='turn_bar_bg'>
+													<div className='turn_bar_inActive_bg'>
 														<img
-															src="/game_play/time_bar.png"
+															src='/asset/game_play/time_bar.png'
 															width={20}
 															height={30}
-															alt="loader"
+															alt='loader'
 															style={{
 																height: "7px",
 																width: `${updateProgressBar(appState.turnTime.counter)}%`,
@@ -413,19 +510,19 @@ function PlayWithPlayer() {
 											</>
 										) : (
 											<>
-												<div className="turn_bar_bg"></div>
+												<div className='turn_bar_bg'></div>
 											</>
 										)}
 									</div>
 								</div>
 							</div>
-							<div className="btm_sesc">
-								<div className="gameBoard">
+							<div className='btm_sesc'>
+								<div className='gameBoard'>
 									<Board playerPositions={appState.position} turn={appState.turn} />
+									<Popupbox />
 								</div>
 							</div>
 						</div>
-						{/* <Popupbox /> */}
 					</div>
 					{/*<--end::bg screen---->*/}
 				</div>

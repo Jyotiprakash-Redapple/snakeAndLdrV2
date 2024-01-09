@@ -1,7 +1,7 @@
 import React from "react";
 import { useAppContext } from "../../arbitar/context/Provider";
 import { useNavigate } from "react-router-dom";
-import { updateGameMode } from "../../arbitar/context/reducer/move";
+import { updateGameMode, newGameInitAi } from "../../arbitar/context/reducer/move";
 import { gameMode } from "../../arbitar/context/reducer/constant";
 function Loadeing() {
 	const router = useNavigate();
@@ -25,6 +25,7 @@ function Loadeing() {
 				if (widthRef.current === 94) {
 					if (_gameMode === "offline") {
 						router("/game/ai", { replace: true });
+						dispatch(newGameInitAi());
 					} else if (_gameMode === "online") {
 						if (appState.socket) {
 							// redom match queue emit
@@ -61,19 +62,19 @@ function Loadeing() {
 
 	return (
 		<main>
-			<div className="view_container">
-				<div className="load_wrapper">
-					<div className="load_background">
-						<div className="inner_wrapper">
-							<div className="title"></div>
-							<div className="loadeing_bg">
-								<div className="loadeing_text"></div>
+			<div className='view_container'>
+				<div className='load_wrapper'>
+					<div className='load_background'>
+						<div className='inner_wrapper'>
+							<div className='title'></div>
+							<div className='loadeing_bg'>
+								<div className='loadeing_text'></div>
 								<img
 									key={widthRef.current}
-									src="/loader/loading_bar.png"
+									src='/asset/loader/loading_bar.png'
 									width={20}
 									height={30}
-									alt="loader"
+									alt='loader'
 									style={{
 										width: `${loadingWidth}%`,
 										objectFit: "cover",

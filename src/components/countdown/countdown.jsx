@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-//import { useAppContext } from "../../arbitar/context/Provider";
+import { useAppContext } from "../../arbitar/context/Provider";
 
 import "../style/countdown.css";
 function Countdown() {
@@ -8,13 +8,12 @@ function Countdown() {
 
 	// const auth_token = localStorage.getItem("auth_token");
 	const countRef = React.useRef(30);
-	// const { appState, dispatch } = useAppContext();
+	const { appState, dispatch } = useAppContext();
 
 	const handelBack = () => {
-		// console.log(appState.position);
-		// if (!Object.keys(appState.position).length) {
-		// 	appState.socket.onQueueLeave();
-		// }
+		if (!Object.keys(appState.position).length) {
+			appState.socket.onQueueLeave();
+		}
 	};
 
 	React.useEffect(() => {
@@ -36,16 +35,16 @@ function Countdown() {
 		}
 	}, [time]);
 
-	// Optionally, you can use another useEffect to reset the timer when the position is found.
-	// React.useEffect(() => {
-	// 	if (Object.keys(appState.position).length) {
-	// 		countRef.current = 0;
-	// 	}
-	// }, [appState.position]);
+	//Optionally, you can use another useEffect to reset the timer when the position is found.
+	React.useEffect(() => {
+		if (Object.keys(appState.position).length) {
+			countRef.current = 0;
+		}
+	}, [appState.position]);
 	return (
-		<div className="_cont">
-			<div className="_spinner"></div>
-			<span className="_number">{time}</span>
+		<div className='_cont'>
+			<div className='_spinner'></div>
+			<span className='_number'>{time}</span>
 		</div>
 	);
 }

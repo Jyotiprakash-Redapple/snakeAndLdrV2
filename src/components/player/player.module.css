@@ -32,7 +32,7 @@
 	width: 100px;
 	height: 107px;
 	margin-left: -1px;
-	background-image: url("/public/match_make/player_base.png");
+	background-image: url("/public/asset/match_make/player_base.png");
 	background-size: contain;
 	background-repeat: no-repeat;
 	display: flex;

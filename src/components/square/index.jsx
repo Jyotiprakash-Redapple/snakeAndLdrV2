@@ -7,6 +7,8 @@ const Square = ({ number }) => {
 			style={{
 				width: "35px",
 				height: "35px",
+				// color: "red",
+				// border: "2px solid red",
 				boxSizing: "border-box",
 			}}>
 			{/* {number} */}

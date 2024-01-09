@@ -1,6 +1,6 @@
 import React from "react";
 import Square from "../square";
-// import Popup from "../../component/popup/popup";
+
 import { initBoardPosition } from "../../arbitar/helper";
 import Pawn from "../pawn";
 function board({ playerPositions, turn }) {
@@ -27,14 +27,34 @@ function board({ playerPositions, turn }) {
 
 	return (
 		<>
-			<img src='/game_play/gameBoard.png' className='game_board_img'></img>
+			<img src='/asset/game_play/gameBoard.png' className='game_board_img'></img>
 
 			<div className='board_temp'>
 				<div className='snakeLdr'>
-					<img src='/game_play/ldr1.png' style={{ top: "8px", position: "absolute", height: "272px", objectFit: "contain", left: "98px" }}></img>
-					<img src='/game_play/ldr2.png' style={{ width: "57px", top: "83px", position: "absolute", height: "249px", objectFit: "contain", left: "66px" }}></img>
 					<img
-						src='/game_play/ldr3.png'
+						src='/asset/game_play/ldr1.png'
+						className='ldr1'
+						style={{
+							top: "8px",
+							position: "absolute",
+							height: "272px",
+							objectFit: "contain",
+							left: "98px",
+						}}></img>
+					<img
+						src='/asset/game_play/ldr2.png'
+						className='ldr2'
+						style={{
+							width: "57px",
+							top: "83px",
+							position: "absolute",
+							height: "249px",
+							objectFit: "contain",
+							left: "66px",
+						}}></img>
+					<img
+						src='/asset/game_play/ldr3.png'
+						className='ldr3'
 						style={{
 							width: "43px",
 							top: "112px",
@@ -44,7 +64,8 @@ function board({ playerPositions, turn }) {
 							left: "270px",
 						}}></img>
 					<img
-						src='/game_play/ldr4.png'
+						src='/asset/game_play/ldr4.png'
+						className='ldr4btm'
 						style={{
 							width: "50px",
 							top: "232px",
@@ -53,7 +74,8 @@ function board({ playerPositions, turn }) {
 							left: "270px",
 						}}></img>
 					<img
-						src='/game_play/ldr4.png'
+						src='/asset/game_play/ldr4.png'
+						className='ldr4top'
 						style={{
 							width: "50px",
 							top: "9px",
@@ -62,7 +84,8 @@ function board({ playerPositions, turn }) {
 							left: "20px",
 						}}></img>
 					<img
-						src='/game_play/ldr6.png'
+						src='/asset/game_play/ldr6.png'
+						className='ldr6'
 						style={{
 							width: "50px",
 							top: "111px",
@@ -72,7 +95,8 @@ function board({ playerPositions, turn }) {
 						}}></img>
 
 					<img
-						src='/game_play/slr1.png'
+						src='/asset/game_play/slr1.png'
+						className='slr1'
 						style={{
 							width: "50px",
 							top: "226px",
@@ -81,7 +105,8 @@ function board({ playerPositions, turn }) {
 							left: "118px",
 						}}></img>
 					<img
-						src='/game_play/slr2.png'
+						src='/asset/game_play/slr2.png'
+						className='slr2'
 						style={{
 							width: "116px",
 							top: "94px",
@@ -91,7 +116,8 @@ function board({ playerPositions, turn }) {
 						}}></img>
 
 					<img
-						src='/game_play/slr3.png'
+						src='/asset/game_play/slr3.png'
+						className='slr3'
 						style={{
 							width: "69px",
 							top: "94px",
@@ -101,7 +127,8 @@ function board({ playerPositions, turn }) {
 						}}></img>
 
 					<img
-						src='/game_play/slr4.png'
+						src='/asset/game_play/slr4.png'
+						className='slr4'
 						style={{
 							width: "45px",
 							top: "239px",
@@ -110,7 +137,8 @@ function board({ playerPositions, turn }) {
 							left: "8px",
 						}}></img>
 					<img
-						src='/game_play/slr5.png'
+						src='/asset/game_play/slr5.png'
+						className='slr5'
 						style={{
 							width: "45px",
 							top: "16px",
@@ -120,7 +148,8 @@ function board({ playerPositions, turn }) {
 						}}></img>
 
 					<img
-						src='/game_play/slr6.png'
+						src='/asset/game_play/slr6.png'
+						className='slr6'
 						style={{
 							width: "45px",
 							top: "81px",
@@ -129,7 +158,8 @@ function board({ playerPositions, turn }) {
 							left: "24px",
 						}}></img>
 					<img
-						src='/game_play/slr7.png'
+						src='/asset/game_play/slr7.png'
+						className='slr7'
 						style={{
 							width: "125px",
 							top: "45px",
@@ -142,7 +172,6 @@ function board({ playerPositions, turn }) {
 				<Pawn position={playerPositions.player1.value} parent_position={playerPositions} player={playerPositions.player1.color} />
 				<Pawn position={playerPositions.player2.value} parent_position={playerPositions} player={playerPositions.player2.color} />
 			</div>
-			{/* <Popup></Popup> */}
 		</>
 	);
 }

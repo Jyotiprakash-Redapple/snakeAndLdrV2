@@ -149,11 +149,32 @@ let newGameInitAi = () => {
 		},
 
 		turn: "r",
-		status: gameStatus.pending,
+		status: gameStatus.ongoing,
 	};
 	return {
 		type: actionTypes.NEW_GAME_INIT_AI,
 		payload: { ...gameInit },
+	};
+};
+
+let turnChnage = (arg) => {
+	return {
+		type: actionTypes.CHANGE_TURN,
+		payload: arg,
+	};
+};
+
+let animateDice = (arg) => {
+	return {
+		type: actionTypes.ANIMATE_DICE,
+		payload: arg,
+	};
+};
+
+let currentDice = (arg) => {
+	return {
+		type: actionTypes.CURRENT_DICE,
+		payload: arg,
 	};
 };
 export {
@@ -172,4 +193,7 @@ export {
 	turnUpdate,
 	makeAnimateMove,
 	animateBoard,
+	turnChnage,
+	animateDice,
+	currentDice,
 };

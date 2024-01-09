@@ -1,10 +1,26 @@
 import React, { useState } from "react";
 import { animated } from "react-spring";
-import { generateArea } from "../../arbitar/helper";
+import { generateArea, cordinate } from "../../arbitar/helper";
 import useWindowDimension from "../../arbitar/hook/useWindowDimensions";
-const Pawn = animated(({ position, player, parent_position }) => {
+
+function getSize(width) {
+	if (width <= 320) {
+		return "xs";
+	} else if (width > 320 && width <= 380) {
+		return "sm";
+	} else if (width > 380 && width <= 390) {
+		return "md";
+	} else if (width > 390 && width <= 480) {
+		return "xl";
+	} else if (width > 480 && width <= 600) {
+		return "xxl";
+	} else {
+		return "root";
+	}
+}
+const Pawn = animated(({ position, parent_position, player }) => {
 	const [view_port, _] = useState(useWindowDimension());
-	const device = generateArea(32);
+	const device = cordinate["small"][getSize(window.innerWidth)];
 
 	const getPawnSize = () => {
 		// if (view_port.width <= 600) {
@@ -18,10 +34,11 @@ const Pawn = animated(({ position, player, parent_position }) => {
 
 	return (
 		<animated.div
+			className={`${getSize(window.innerWidth)}`}
 			id={`pawn-${player}`}
 			style={{
 				position: "absolute",
-
+				zIndex: 2000,
 				width: getPawnSize(),
 
 				height: getPawnSize(),
@@ -40,7 +57,7 @@ const Pawn = animated(({ position, player, parent_position }) => {
 						: "",
 
 				borderRadius: "50%",
-				backgroundImage: player === "r" ? `url('/game_play/red.png')` : `url('/game_play/blue.png')`,
+				backgroundImage: player === "r" ? `url('/asset/game_play/red.png')` : `url('/asset/game_play/blue.png')`,
 				backgroundSize: "cover", // Ensure the image covers the entire div
 				transform: `translate(${device[position].x}px, ${device[position].y}px)`,
 			}}
