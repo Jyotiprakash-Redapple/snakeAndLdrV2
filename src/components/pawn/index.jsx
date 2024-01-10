@@ -8,12 +8,6 @@ function getSize(width) {
 		return "xs";
 	} else if (width > 320 && width <= 380) {
 		return "sm";
-	} else if (width > 380 && width <= 390) {
-		return "md";
-	} else if (width > 390 && width <= 480) {
-		return "xl";
-	} else if (width > 480 && width <= 600) {
-		return "xxl";
 	} else {
 		return "root";
 	}
@@ -21,7 +15,7 @@ function getSize(width) {
 const Pawn = animated(({ position, parent_position, player }) => {
 	const [view_port, _] = useState(useWindowDimension());
 	const device = cordinate["small"][getSize(window.innerWidth)];
-
+	console.log(getSize(window.innerWidth));
 	const getPawnSize = () => {
 		// if (view_port.width <= 600) {
 		// 	return parent_position.player1.value === parent_position.player2.value ? "30px" : "40px";

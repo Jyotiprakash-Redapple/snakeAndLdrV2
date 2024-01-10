@@ -1,3 +1,7 @@
+* {
+	margin: 0 auto;
+	padding: 0;
+}
 :root {
 	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 	line-height: 1.5;
@@ -8,20 +12,13 @@
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	-webkit-text-size-adjust: 100%;
-
-	--tile-size: 30px;
+	--tile-size: 29px;
 	--light-tiles: #72d0ff;
 	--dark-tiles: #4b74a3;
 	--high-light-tiles: #2417d3;
 	--check: #feec48;
 
 	--glow-color: hsl(186 100% 69%);
-}
-*,
-html::after,
-html::before {
-	margin: 0;
-	padding: 0;
 }
 
 /*================================ Splash Screen ======================================*/
@@ -36,7 +33,6 @@ html::before {
 }
 .splash_wrapper,
 .search_wrapper,
-.play_wrapper,
 .load_wrapper {
 	position: relative;
 	/* width: 390px; */
@@ -55,7 +51,265 @@ html::before {
 }
 
 /* ===============================Game Play Componenet ==============================*/
-.player_bg {
+
+.game_body {
+	padding: 0;
+	margin: 0 auto;
+	background-color: #000;
+	background: url("asset/game_play/bg.png");
+	background-size: 200%;
+	background-position: center;
+	font-family: sans-serif;
+	overflow: hidden;
+}
+.gameplay_box {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100vh;
+}
+.game_bg {
+	width: 100%;
+	max-width: 346px;
+	/* height: 100%; */
+	margin: 0 auto;
+	position: relative;
+}
+.game_bg img {
+	width: 100%;
+}
+.top-area {
+	position: absolute;
+	top: 20px;
+	left: 0;
+	right: 0;
+	width: 100%;
+}
+.time {
+	width: 100%;
+	display: inline-block;
+	text-align: center;
+	color: #fff;
+	font-size: 14px;
+	font-weight: 600;
+}
+.top-control {
+	position: relative;
+	width: 100%;
+	display: inline-block;
+	top: 20px;
+}
+.back {
+	width: 25px;
+	float: left;
+	margin-left: 8px;
+	/* position: absolute;
+  top: 26px;
+  left: 10px; */
+}
+.back img,
+.sound img {
+	width: 100%;
+}
+.sound {
+	width: 25px;
+	float: right;
+	margin-right: 8px;
+}
+.player-info-area {
+	width: 90%;
+	position: absolute;
+	top: 110px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	left: 0;
+	right: 0;
+}
+.left,
+.center,
+.right {
+	position: relative;
+}
+.user-image {
+	position: absolute;
+	width: 22px;
+	height: 22px;
+	overflow: hidden;
+	border-radius: 5px;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-image: url("./asset/game_play/profile_rc.png");
+}
+.user-image img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+.user-left {
+	right: 9px;
+	top: 13px;
+}
+.user-right {
+	left: 9px;
+	top: 13px;
+}
+.player-name {
+	color: #fff;
+	font-weight: 500;
+	font-size: 12px;
+	position: absolute;
+	width: 85px;
+	top: 12px;
+	text-align: center;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+.player-name-left {
+	left: 6px;
+}
+.player-name-right {
+	right: 6px;
+}
+.gameplay-board {
+	position: absolute;
+	top: 167px;
+	left: 0;
+	right: 0;
+	width: 92%;
+	text-align: center;
+}
+.gameplay-board img {
+	width: 100%;
+}
+.grid-main {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	padding: 13px;
+	box-sizing: border-box;
+}
+.board-grid {
+	width: 100%;
+	height: 100%;
+	display: grid;
+	grid-template-columns: repeat(10, var(--tile-size));
+	grid-template-rows: repeat(10, var(--tile-size));
+}
+.box {
+	width: 27px;
+	height: 27px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: transparent;
+	font-weight: 600;
+	border: 1px solid #f00;
+}
+.roll-btn {
+	position: absolute;
+	bottom: 34px;
+	width: 83px;
+	left: 0;
+	right: 0;
+	text-align: center;
+}
+.roll-btn img {
+	width: 100%;
+}
+.roll-btn p {
+	margin: 0;
+	color: #fff;
+	font-size: 13px;
+}
+.snake_ladder {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+.l1 {
+	width: 54px;
+	position: absolute;
+	bottom: 24px;
+	right: 9px;
+}
+.l2 {
+	width: 106px;
+	position: absolute;
+	bottom: 57px;
+	right: 106px;
+}
+.l3 {
+	width: 50px;
+	position: absolute;
+	bottom: 52px;
+	left: 75px;
+}
+.l4 {
+	width: 40px;
+	position: absolute;
+	bottom: 114px;
+	right: 24px;
+}
+.l5 {
+	width: 40px;
+	position: absolute;
+	bottom: 144px;
+	left: 24px;
+}
+.l6 {
+	width: 54px;
+	position: absolute;
+	top: 15px;
+	left: 23px;
+}
+.s1 {
+	width: 50px;
+	position: absolute;
+	bottom: 30px;
+	left: 10px;
+}
+.s2 {
+	width: 50px;
+	position: absolute;
+	bottom: 22px;
+	left: 120px;
+}
+.s3 {
+	width: 107px;
+	position: absolute;
+	top: 58px;
+	left: 145px;
+}
+.s4 {
+	width: 107px;
+	position: absolute;
+	top: 98px;
+	left: 34px;
+}
+.s5 {
+	width: 57px;
+	position: absolute;
+	top: 95px;
+	right: 66px;
+}
+.s6 {
+	width: 57px;
+	position: absolute;
+	top: 78px;
+	left: 18px;
+}
+.s7 {
+	width: 57px;
+	position: absolute;
+	top: 23px;
+	right: 49px;
+}
+/* .player_bg {
 	position: relative;
 	width: 100%;
 	height: 100%;
@@ -75,7 +329,7 @@ html::before {
 	font-size: 13px;
 	position: absolute;
 	/* top: 23px; */
-	top: 19px;
+/* top: 19px;
 	left: 0;
 
 	display: flex;
@@ -92,10 +346,10 @@ html::before {
 	position: absolute;
 	/* top: 65px;
   left: 7px; */
-	top: 55px;
-	left: 5px;
-}
-.sound_game {
+/* top: 55px;
+	left: 5px; */
+/* } */
+/* .sound_game {
 	width: 30px;
 	height: 30px;
 	background-position: center;
@@ -104,18 +358,18 @@ html::before {
 	position: absolute;
 	/* top: 65px;
   right: 7px; */
-	top: 55px;
+/* top: 55px;
 	right: 5px;
-}
+} */
 
-.sound_game.on {
+/* .sound_game.on {
 	background-image: url("/asset/game_play/sound_on.png");
 }
 .sound_game.off {
 	background-image: url("/asset/game_play/sound_off.png");
-}
+} */
 
-.pawn_click {
+/* .pawn_click {
 	position: absolute;
 	width: 130px;
 	height: 70px;
@@ -150,9 +404,9 @@ html::before {
 
 .pawn_click > div > .role_btn.active:hover {
 	transform: scale(1.4);
-}
+} */
 
-.player_bg > .inner_wrapper {
+/* .player_bg > .inner_wrapper {
 	width: 90%;
 	height: 65%;
 	display: flex;
@@ -169,13 +423,13 @@ html::before {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-}
+} */
 
-.player_bg > .inner_wrapper > .btm_sesc {
+/* .player_bg > .inner_wrapper > .btm_sesc {
 	width: 100%;
-	height: 80%;
-	/* background-color: #72d0ff; */
-}
+	height: 80%; */
+/* background-color: #72d0ff; */
+/* }
 
 .player_bg > .inner_wrapper > .top_sesc > .left_base {
 	height: 100%;
@@ -215,9 +469,9 @@ html::before {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-}
+} */
 
-.player_bg > .inner_wrapper > .top_sesc > .left_base > .player_name > .turn_bar_bg > .turn_bar_inActive_bg,
+/* .player_bg > .inner_wrapper > .top_sesc > .left_base > .player_name > .turn_bar_bg > .turn_bar_inActive_bg,
 .player_bg > .inner_wrapper > .top_sesc > .right_base > .player_name > .turn_bar_bg > .turn_bar_inActive_bg {
 	width: 80%;
 	height: 7px;
@@ -238,9 +492,9 @@ html::before {
 	background-image: url("./asset/game_play/profile_rc.png");
 	background-repeat: no-repeat;
 	background-size: contain;
-}
+} */
 
-.player_bg > .inner_wrapper > .top_sesc > .right_base {
+/* .player_bg > .inner_wrapper > .top_sesc > .right_base {
 	height: 100%;
 	width: 120px;
 
@@ -262,31 +516,31 @@ html::before {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-}
+}  */
 
 /*====================================Game Board Component=========================*/
-.gameBoard {
+/* .gameBoard {
 	width: 100%;
 	height: 100%;
 	position: relative;
 	display: flex;
 	/* background-color: #000; */
-	align-items: center;
+/* align-items: center;
 	justify-content: center;
-}
-.game_board_img {
-	/* width: 372px;
+} */
+/* .game_board_img { */
+/* width: 372px;
 	height: 372px; */
-	/* width: 350px;
+/* width: 350px;
   height: 350px; */
-	width: 100%;
+/* width: 100%;
 	height: 100%;
 	position: absolute;
 	left: 0;
 	top: 0;
 	background-size: cover;
-}
-.snakeLdr {
+} */
+/* .snakeLdr {
 	z-index: 10;
 	width: 100%;
 	height: 100%;
@@ -297,27 +551,27 @@ html::before {
 	grid-template-columns: repeat(10, var(--tile-size));
 	grid-template-rows: repeat(10, var(--tile-size));
 	transition: all 0.3s ease-in-out;
-}
-.board_temp {
+} */
+/* .board_temp {
 	position: relative;
 	display: grid;
 	grid-template-columns: repeat(10, var(--tile-size));
 	grid-template-rows: repeat(10, var(--tile-size));
-	transition: all 0.3s ease-in-out;
-	/* margin-bottom: 13px;
+	transition: all 0.3s ease-in-out; */
+/* margin-bottom: 13px;
   margin-right: 1px; */
-	/* background-color: #fff; */
-	width: 99%;
-	height: 99%;
-	/* top: 0;
+/* background-color: #fff; */
+/* width: 99%;
+	height: 99%; */
+/* top: 0;
   left: 0; */
-	top: 12px;
-	left: 8px;
-	/* top: 0;
+/* top: 12px;
+	left: 8px; */
+/* top: 0;
   left: 0; */
-}
+/* } */
 
-.square {
+/* .square {
 	width: var(--tile-size);
 	height: var(--tile-size);
 
@@ -331,7 +585,7 @@ html::before {
 .square.multiplayer {
 	display: flex;
 	flex-direction: row;
-}
+} */
 
 /**********************************Player Position Color **************************/
 .player {
@@ -615,15 +869,15 @@ html::before {
 		height: 50px !important;
 	}
 } */
-.turn_role_text {
+/* .turn_role_text {
 	text-transform: uppercase;
 	font-size: 12px;
 }
 .turn_role_text strong {
 	font-weight: 400;
-}
+} */
 
-@media only screen and (max-width: 600px) {
+/* @media only screen and (max-width: 600px) {
 	:root {
 		--tile-size: 40px;
 	}
@@ -1032,5 +1286,118 @@ html::before {
 	}
 	:root {
 		--tile-size: 26px;
+	}
+} */
+
+@media only screen and (max-width: 600px) {
+	.splash_wrapper,
+	.search_wrapper,
+	.load_wrapper {
+		position: relative;
+		width: 100vw;
+		height: 100vh;
+		background-color: #000;
+		display: flex;
+		justify-content: center;
+	}
+	.splash_background {
+		width: 100%;
+		height: 100%;
+		background-image: url("/asset/splash/splash_art.png");
+		background-size: contain !important;
+		background-repeat: no-repeat;
+	}
+
+	.load_background {
+		width: 100%;
+		height: 100%;
+		background-image: url("/asset/loader/BG.png");
+		background-repeat: no-repeat;
+		background-size: contain !important;
+		position: relative;
+	}
+}
+@media only screen and (max-width: 380px) {
+	:root {
+		--tile-size: 31px;
+	}
+	.top-area {
+		top: 23px;
+	}
+	.top-control {
+		top: 22px;
+	}
+	.game-bg {
+		max-width: 376px;
+	}
+	.grid-main {
+		padding: 15px 18px;
+	}
+	.box {
+		width: 30px;
+		height: 30px;
+	}
+	.s7 {
+		right: 55px;
+	}
+	.s6 {
+		top: 90px;
+		left: 23px;
+	}
+	.s5 {
+		top: 111px;
+		right: 72px;
+	}
+	.s4 {
+		top: 103px;
+	}
+	.s3 {
+		width: 117px;
+		top: 65px;
+		left: 160px;
+	}
+	.s2 {
+		bottom: 25px;
+		left: 133px;
+	}
+	.l1 {
+		bottom: 29px;
+		right: 9px;
+	}
+	.l2 {
+		width: 116px;
+		bottom: 61px;
+		right: 115px;
+	}
+	.l3 {
+		width: 54px;
+		bottom: 57px;
+		left: 82px;
+	}
+	.l4 {
+		bottom: 127px;
+	}
+	.l5 {
+		width: 45px;
+		bottom: 157px;
+		left: 27px;
+	}
+}
+@media only screen and (max-width: 320px) {
+	:root {
+		--tile-size: 27px;
+	}
+	.grid-main {
+		padding: 10px 12px;
+	}
+	.box {
+		width: 26px;
+		height: 26px;
+	}
+	.top-area {
+		top: 20px;
+	}
+	.top-control {
+		top: 14px;
 	}
 }
