@@ -93,7 +93,7 @@ const Pawn = animated(({ position, parent_position, player, animate }) => {
 							: parent_position.player1.value === parent_position.player2.value && player === "y"
 							? "7px"
 							: "",
-					// transform: animate ? "scale(1.15)" : "",
+					transform: animate ? "scale(1.15)" : "",
 				}}
 			/>
 		</animated.div>
