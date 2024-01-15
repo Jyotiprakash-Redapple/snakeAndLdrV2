@@ -11,12 +11,7 @@ import { FaHeartBroken } from "react-icons/fa";
 import Popupbox from "../../../components/popup/popupbox";
 import { snakes, ladder, generateArea, cordinate } from "../../../arbitar/helper";
 
-import {
-	makeNewMove,
-	dectateWin,
-	makeAnimateMove,
-	turnChnage,
-} from "../../../arbitar/context/reducer/move";
+import { makeNewMove, dectateWin, makeAnimateMove, turnChnage } from "../../../arbitar/context/reducer/move";
 
 import ReactDice from "react-dice-complete";
 import PawnMovementSound from "../../../audio/pawn_movement.mp3";
@@ -273,47 +268,35 @@ function PlayWithPlayer() {
 	}, [appState.turn]);
 
 	return (
-		<main className="game_body">
-			<div className="gameplay_box">
-				<div className="game_bg">
-					<img src="/asset/game_play/bg.png" alt="" />
-					<div className="top-area">
-						<div className="time">{moment.utc(time * 1000).format("mm:ss")} </div>
-						<div className="top-control">
-							<div className="back">
-								<img src="/asset/game_play/back.png" alt="back" onClick={() => setQuitGame(true)} />
+		<main className='game_body'>
+			<div className='gameplay_box'>
+				<div className='game_bg'>
+					<img src='/asset/game_play/bg.png' alt='' />
+					<div className='top-area'>
+						<div className='time'>{moment.utc(time * 1000).format("mm:ss")} </div>
+						<div className='top-control'>
+							<div className='back'>
+								<img src='/asset/game_play/back.png' alt='back' onClick={() => setQuitGame(true)} />
 							</div>
-							<div className="sound">
-								{soundStatus && (
-									<img
-										src="/asset/game_play/sound_on.png"
-										alt="sound"
-										onClick={() => setSoundStatus(!soundStatus)}
-									/>
-								)}
-								{!soundStatus && (
-									<img
-										src="/asset/game_play/sound_off.png"
-										alt="sound"
-										onClick={() => setSoundStatus(!soundStatus)}
-									/>
-								)}
+							<div className='sound'>
+								{soundStatus && <img src='/asset/game_play/sound_on.png' alt='sound' onClick={() => setSoundStatus(!soundStatus)} />}
+								{!soundStatus && <img src='/asset/game_play/sound_off.png' alt='sound' onClick={() => setSoundStatus(!soundStatus)} />}
 							</div>
 						</div>
 					</div>
-					<div className="player-info-area">
-						<div className="left">
-							<div className="player-name player-name-left">{appState.pl?.user_name || "TEST"}</div>
+					<div className='player-info-area'>
+						<div className='left'>
+							<div className='player-name player-name-left'>{appState.pl?.user_name || "TEST"}</div>
 
-							<div className="user-image user-left">
-								<img src={appState?.pl?.profile || "/default.png"} alt="" />
+							<div className='user-image user-left'>
+								<img src={appState?.pl?.profile || "/default.png"} alt='' />
 							</div>
-							<img src="/asset/game_play/Left_base.png" alt="" />
+							<img src='/asset/game_play/Left_base.png' alt='' />
 						</div>
-						<div className="center">
-							<img src="/asset/game_play/dise_base.png" alt="" />
+						<div className='center'>
+							<img src='/asset/game_play/dise_base.png' alt='' />
 							<div
-								className="dice_movement"
+								className='dice_movement'
 								style={{
 									width: "100%",
 									height: "70%",
@@ -332,8 +315,8 @@ function PlayWithPlayer() {
 									ref={diceRef}
 									disableIndividual
 									// disableRandom
-									faceColor="#fff"
-									dotColor="black"
+									faceColor='#fff'
+									dotColor='black'
 									dieSize={25}
 									rollDone={(val) => {
 										let start = localStorage.getItem("GAME_START_SNLIO");
@@ -344,26 +327,26 @@ function PlayWithPlayer() {
 								/>
 							</div>
 						</div>
-						<div className="right">
-							<div className="player-name player-name-right">{"AI"}</div>
+						<div className='right'>
+							<div className='player-name player-name-right'>{"AI"}</div>
 
-							<div className="user-image user-right">
-								<img src={appState?.op?.profile || "/default.png"} alt="" />
+							<div className='user-image user-right'>
+								<img src={appState?.op?.profile || "/default.png"} alt='' />
 							</div>
-							<img src="/asset/game_play/right_base.png" alt="" />
+							<img src='/asset/game_play/right_base.png' alt='' />
 						</div>
 					</div>
-					<div className="gameplay-board">
+					<div className='gameplay-board'>
 						{quitGame && (
-							<div className="quit_game_bg">
-								<div className="quit_game_wrapper">
-									<div className="quit_game_text">Do You Want To Quit ?</div>
-									<div className="quit_game_btn">
+							<div className='quit_game_bg'>
+								<div className='quit_game_wrapper'>
+									<div className='quit_game_text'>Do You Want To Quit ?</div>
+									<div className='quit_game_btn'>
 										{" "}
-										<button className="yes" onClick={() => handelQuitGame()}>
+										<button className='yes' onClick={() => handelQuitGame()}>
 											Yes
 										</button>
-										<button className="no" onClick={() => setQuitGame(false)}>
+										<button className='no' onClick={() => setQuitGame(false)}>
 											No
 										</button>
 									</div>
@@ -373,15 +356,13 @@ function PlayWithPlayer() {
 						<Board playerPositions={appState.position} turn={appState.turn} animate={animate} />
 						<Popupbox />
 					</div>
-					<div className="roll-btn">
+					<div className='roll-btn'>
 						{appState.position?.player1?.color === appState?.turn && !animate ? (
-							<img src="/asset/game_play/Roll.png" alt="" onClick={() => handelRollDice()} />
+							<img src='/asset/game_play/Roll.png' alt='' onClick={() => handelRollDice()} style={{ cursor: "pointer" }} />
 						) : (
 							<></>
 						)}
-						<p>
-							{appState.position?.player1?.color === appState?.turn && !animate ? "Your Turn" : "Opponent Turn"}
-						</p>
+						<p>{appState.position?.player1?.color === appState?.turn && !animate ? "Your Turn" : "Opponent Turn"}</p>
 					</div>
 				</div>
 			</div>

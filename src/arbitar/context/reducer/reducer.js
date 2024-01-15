@@ -124,7 +124,7 @@ let reducer = (state, action) => {
 
 		case actionTypes.BOARD_UPDATE: {
 			let board = action.payload.arg.board;
-
+			console.log("====================BOARD_UPDATE:: turn update from server===========================");
 			if (board) {
 				if (board?.status) {
 					return {
@@ -154,17 +154,24 @@ let reducer = (state, action) => {
 			let board = action.payload.arg.board;
 			if (board) {
 				if (board?.animate === true || board?.animate === false) {
+					console.log("====================ANIMATE_BOARD_UPDATE::dice animate function calll===========================");
 					if (board.animate === true) {
 						return {
 							...state,
 							diceAnimate: true,
 						};
 					} else {
-						return {
-							...state,
-							diceAnimate: false,
-							diceValue: board.diceValue,
-						};
+						if (board.animate === false && board?.diceValue) {
+							return {
+								...state,
+								diceAnimate: false,
+								diceValue: board.diceValue,
+							};
+						} else {
+							return {
+								...state,
+							};
+						}
 					}
 				} else {
 					if (board?.status) {
@@ -173,6 +180,7 @@ let reducer = (state, action) => {
 							status: board.status,
 						};
 					} else {
+						console.log("====================ANIMATE_BOARD_UPDATE::pawn animate function ===========================");
 						let updatedColor = board.color;
 						if (state.position.player1.color === updatedColor) {
 							state.position.player1.value = board.currentPosition;
@@ -194,6 +202,7 @@ let reducer = (state, action) => {
 
 		// new move happen in board
 		case actionTypes.NEW_MOVE: {
+			console.log("NEW_MOVE:: try to new move ", action.payload);
 			let advantage = state.advantage;
 			let advantageStatus = "";
 			let updatedColor = action.payload.player_turn;
@@ -204,17 +213,11 @@ let reducer = (state, action) => {
 					state.position.player2.value = action.payload.currentPosition;
 				}
 			}
-			if (
-				state.position.player1.value > state.position.player2.value &&
-				state.position.player1.color === "r"
-			) {
+			if (state.position.player1.value > state.position.player2.value && state.position.player1.color === "r") {
 				advantage = state.position.player1.value - state.position.player2.value;
 				advantageStatus = "r";
 			} else {
-				if (
-					state.position.player1.value > state.position.player2.value &&
-					state.position.player1.color === "y"
-				) {
+				if (state.position.player1.value > state.position.player2.value && state.position.player1.color === "y") {
 					advantage = state.position.player1.value - state.position.player2.value;
 					advantageStatus = "y";
 				}
@@ -229,10 +232,7 @@ let reducer = (state, action) => {
 					},
 					game_state: {
 						status: state.status,
-						advantage:
-							advantage === 0 || state.position.player1.value === state.position.player2.value
-								? "Niether Side "
-								: advantageStatus,
+						advantage: advantage === 0 || state.position.player1.value === state.position.player2.value ? "Niether Side " : advantageStatus,
 					},
 				});
 			}
@@ -243,6 +243,7 @@ let reducer = (state, action) => {
 		}
 
 		case actionTypes.ANIMATE_PAWN: {
+			console.log("actionTypes.ANIMATE_PAWN:: try to animate pawn function call");
 			let advantage = state.advantage;
 			let advantageStatus = "";
 			let updatedColor = action.payload.player_turn;
@@ -253,17 +254,11 @@ let reducer = (state, action) => {
 					state.position.player2.value = action.payload.currentPosition;
 				}
 			}
-			if (
-				state.position.player1.value > state.position.player2.value &&
-				state.position.player1.color === "r"
-			) {
+			if (state.position.player1.value > state.position.player2.value && state.position.player1.color === "r") {
 				advantage = state.position.player1.value - state.position.player2.value;
 				advantageStatus = "r";
 			} else {
-				if (
-					state.position.player1.value > state.position.player2.value &&
-					state.position.player1.color === "y"
-				) {
+				if (state.position.player1.value > state.position.player2.value && state.position.player1.color === "y") {
 					advantage = state.position.player1.value - state.position.player2.value;
 					advantageStatus = "y";
 				}
@@ -278,10 +273,7 @@ let reducer = (state, action) => {
 					},
 					game_state: {
 						status: state.status,
-						advantage:
-							advantage === 0 || state.position.player1.value === state.position.player2.value
-								? "Niether Side "
-								: advantageStatus,
+						advantage: advantage === 0 || state.position.player1.value === state.position.player2.value ? "Niether Side " : advantageStatus,
 					},
 				});
 			}
@@ -293,6 +285,7 @@ let reducer = (state, action) => {
 
 		// win one player
 		case actionTypes.WIN: {
+			console.log("actionTypes.WIN:: win player", action.payload);
 			let winner = action.payload === "r" ? gameStatus.r_win : gameStatus.y_win;
 			if (state.mode === gameMode.online) {
 				state.socket.onUpdateMove({
@@ -322,6 +315,7 @@ let reducer = (state, action) => {
 			};
 		}
 		case actionTypes.CURRENT_DICE: {
+			console.log("actionTypes.CURRENT_DICE:: current dice function call", action.payload);
 			if (state.mode === gameMode.online) {
 				state.socket.onAnimateMove({
 					board: { animate: action.payload.animate, diceValue: action.payload.dice },
@@ -337,6 +331,7 @@ let reducer = (state, action) => {
 		}
 
 		case actionTypes.ANIMATE_DICE: {
+			console.log("actionTypes.ANIMATE_DICE:: aniamte dice function calll", action.payload);
 			if (state.mode === gameMode.online) {
 				state.socket.onAnimateMove({
 					board: { animate: action.payload },
@@ -358,6 +353,7 @@ let reducer = (state, action) => {
 				socket: action.payload.socket,
 			};
 		}
+
 		case actionTypes.CHANGE_TURN: {
 			let turn = action.payload === "r" ? "y" : "r";
 

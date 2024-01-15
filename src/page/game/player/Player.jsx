@@ -10,13 +10,7 @@ import { FaHeartBroken } from "react-icons/fa";
 import Popupbox from "../../../components/popup/popupbox";
 import { snakes, ladder, generateArea, cordinate } from "../../../arbitar/helper";
 
-import {
-	makeNewMove,
-	dectateWin,
-	makeAnimateMove,
-	animateDice,
-	currentDice,
-} from "../../../arbitar/context/reducer/move";
+import { makeNewMove, dectateWin, makeAnimateMove, animateDice, currentDice } from "../../../arbitar/context/reducer/move";
 
 import ReactDice from "react-dice-complete";
 import PawnMovementSound from "../../../audio/pawn_movement.mp3";
@@ -34,10 +28,12 @@ function getSize(width) {
 }
 function PlayWithPlayer() {
 	const [quitGame, setQuitGame] = useState(false);
+
+	const [gameStart, setGameStart] = useState(false);
 	const [soundStatus, setSoundStatus] = useState(true);
 	const [animate, setAnimate] = useState(false);
-	const diceRef = useRef();
-	const diceAnimateRef = useRef();
+	const dicePlayerRef = useRef(null);
+	const diceAnimateRef = useRef(null);
 
 	const router = useNavigate();
 	const { appState, dispatch } = useAppContext();
@@ -75,8 +71,7 @@ function PlayWithPlayer() {
 	 * @function movePlayer
 	 * @description pawn movement logic
 	 */
-	async function movePlayer(player_turn, diceRoll) {
-		console.log("move Player Function calll=================================>");
+	function movePlayer(player_turn, diceRoll) {
 		let currentPosition = 0;
 		setAnimate(true);
 
@@ -93,7 +88,7 @@ function PlayWithPlayer() {
 		for (let i = 1; i <= diceRoll; i++) {
 			setTimeout(async () => {
 				currentPosition += 1;
-
+				console.log("current position of player =====<", player_turn, currentPosition);
 				if (soundStatus) {
 					let soundSource = PawnMovementSound;
 					let sound = new Audio(soundSource);
@@ -106,12 +101,12 @@ function PlayWithPlayer() {
 					})
 				);
 				if (currentPosition >= 100) {
-					dispatch(dectateWin(player_turn));
+					// dispatch(dectateWin(player_turn));
 					return;
 				}
 
 				if (i === diceRoll) {
-					await handleSnakeAndLadder(player_turn, currentPosition);
+					handleSnakeAndLadder(player_turn, currentPosition);
 					// dispatch(currentDice({ animate: false, dice: "" }));
 				}
 			}, i * 225.5);
@@ -173,9 +168,8 @@ function PlayWithPlayer() {
 				}
 			}
 		}
-
-		console.log("NEW MOVE FUNCTION CALLL++++++++++++++++++++++>");
 		dispatch(makeNewMove({ player_turn, currentPosition }));
+
 		setTimeout(() => {
 			setAnimate(false);
 			// dispatch(currentDice({ animate: false, dice: "" }));
@@ -196,13 +190,64 @@ function PlayWithPlayer() {
 			}, 280);
 		});
 	};
-	function handelRollDice() {
-		localStorage.setItem("GAME_START_SNLIO", "1");
+	// function handelRollDice() {
+	// 	var should_play = true;
+	// 	if (!animate) {
+	// 		if (!gameStart) {
+	// 			setGameStart(true);
+	// 		}
+	// 		dispatch(animateDice(true));
+	// 		dicePlayerRef?.current?.rollAll();
+
+	// 		if (soundStatus) {
+	// 			if (should_play) {
+	// 				should_play = !should_play;
+	// 				let soundSource = roolingSound;
+	// 				let sound = new Audio(soundSource);
+	// 				sound.play();
+	// 				sound.onended = () => {
+	// 					should_play = true;
+	// 				};
+	// 			}
+	// 		}
+	// 	}
+	// }
+	// function handelAutoRollDice() {
+	// 	var should_play = true;
+	// 	if (!animate) {
+	// 		diceAnimateRef?.current?.rollAll();
+	// 		console.log("diceAnimateRef?.current?.rollAll();:: auto rule move");
+	// 		if (soundStatus) {
+	// 			if (should_play) {
+	// 				// should_play = !should_play;
+	// 				// let soundSource = roolingSound;
+	// 				// let sound = new Audio(soundSource);
+	// 				// sound.play();
+	// 				// sound.onended = () => {
+	// 				// 	should_play = true;
+	// 				// };
+	// 			}
+	// 		}
+	// 	}
+	// }
+
+	function rollDice() {
 		var should_play = true;
 		if (!animate) {
+			const dice = [...document.querySelectorAll(".die-list")];
 			dispatch(animateDice(true));
-			diceRef?.current?.rollAll();
-			console.log("diceRef", diceRef);
+			let current_dice = "";
+			dice.forEach((die) => {
+				toggleClasses(die);
+				current_dice = getRandomNumber(1, 6);
+				die.dataset.roll = Number(current_dice);
+			});
+
+			console.log("current Dice After Rule", currentDice);
+			if (current_dice) {
+				dispatch(currentDice({ animate: false, dice: Number(current_dice) }));
+				movePlayer(appState?.turn, Number(current_dice));
+			}
 			if (soundStatus) {
 				if (should_play) {
 					should_play = !should_play;
@@ -216,66 +261,53 @@ function PlayWithPlayer() {
 			}
 		}
 	}
-	function handelAutoRollDice() {
-		var should_play = true;
-		if (!animate) {
-			diceAnimateRef?.current?.rollAll();
-			console.log(diceAnimateRef.current, "animate dice move====>");
-			if (soundStatus) {
-				if (should_play) {
-					// should_play = !should_play;
-					// let soundSource = roolingSound;
-					// let sound = new Audio(soundSource);
-					// sound.play();
-					// sound.onended = () => {
-					// 	should_play = true;
-					// };
-				}
+
+	function autoRollDice() {
+		const dice = [...document.querySelectorAll(".die-list")];
+		dice.forEach((die) => {
+			toggleClasses(die);
+			if (appState.diceValue) {
+				die.dataset.roll = appState.diceValue;
 			}
-		}
+		});
 	}
-	useLayoutEffect(() => {
-		localStorage.removeItem("GAME_START_SNLIO");
-	}, []);
+	function toggleClasses(die) {
+		die.classList.toggle("odd-roll");
+		die.classList.toggle("even-roll");
+	}
+
+	function getRandomNumber(min, max) {
+		min = Math.ceil(min);
+		max = Math.floor(max);
+		return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
 
 	useEffect(() => {
 		if (appState.diceAnimate === true && appState.turn !== appState.position.player1.color) {
-			handelAutoRollDice();
+			autoRollDice();
 		}
 	}, [appState.diceAnimate]);
 
 	return (
-		<main className="game_body">
-			<div className="gameplay_box">
-				<div className="game_bg">
-					<img src="/asset/game_play/bg.png" alt="" />
-					<div className="top-area">
-						<div className="time">{moment.utc(appState?.gameTime * 1000).format("mm:ss")} </div>
-						<div className="top-control">
-							<div className="back">
-								<img src="/asset/game_play/back.png" alt="back" onClick={() => setQuitGame(true)} />
+		<main className='game_body'>
+			<div className='gameplay_box'>
+				<div className='game_bg'>
+					<img src='/asset/game_play/bg.png' alt='' />
+					<div className='top-area'>
+						<div className='time'>{moment.utc(appState?.gameTime * 1000).format("mm:ss")} </div>
+						<div className='top-control'>
+							<div className='back'>
+								<img src='/asset/game_play/back.png' alt='back' onClick={() => setQuitGame(true)} />
 							</div>
-							<div className="sound">
-								{soundStatus && (
-									<img
-										src="/asset/game_play/sound_on.png"
-										alt="sound"
-										onClick={() => setSoundStatus(!soundStatus)}
-									/>
-								)}
-								{!soundStatus && (
-									<img
-										src="/asset/game_play/sound_off.png"
-										alt="sound"
-										onClick={() => setSoundStatus(!soundStatus)}
-									/>
-								)}
+							<div className='sound'>
+								{soundStatus && <img src='/asset/game_play/sound_on.png' alt='sound' onClick={() => setSoundStatus(!soundStatus)} />}
+								{!soundStatus && <img src='/asset/game_play/sound_off.png' alt='sound' onClick={() => setSoundStatus(!soundStatus)} />}
 							</div>
 						</div>
 					</div>
-					<div className="player-info-area">
-						<div className="left">
-							<div className="player-name player-name-left">{appState.pl?.user_name}</div>
+					<div className='player-info-area'>
+						<div className='left'>
+							<div className='player-name player-name-left'>{appState.pl?.user_name}</div>
 							{appState?.pl.id === appState.turnTime.current_player_id && appState.turnTime.life ? (
 								<div
 									style={{
@@ -292,13 +324,13 @@ function PlayWithPlayer() {
 									) : (
 										<IoMdHeart style={{ color: "#ED5AB3", fontSize: "20px" }} />
 									)}
-									<div className="turn_bar_bg">
-										<div className="turn_bar_inActive_bg">
+									<div className='turn_bar_bg'>
+										<div className='turn_bar_inActive_bg'>
 											<img
-												src="/asset/game_play/time_bar.png"
+												src='/asset/game_play/time_bar.png'
 												width={20}
 												height={30}
-												alt="loader"
+												alt='loader'
 												style={{
 													position: "absolute",
 													left: "0",
@@ -315,15 +347,15 @@ function PlayWithPlayer() {
 							) : (
 								<></>
 							)}
-							<div className="user-image user-left">
-								<img src={appState?.pl?.profile || "/default.png"} alt="" />
+							<div className='user-image user-left'>
+								<img src={appState?.pl?.profile || "/default.png"} alt='' />
 							</div>
-							<img src="/asset/game_play/Left_base.png" alt="" />
+							<img src='/asset/game_play/Left_base.png' alt='' />
 						</div>
-						<div className="center">
-							<img src="/asset/game_play/dise_base.png" alt="" />
+						<div className='center'>
+							<img src='/asset/game_play/dise_base.png' alt='' />
 							<div
-								className="dice_movement"
+								className='dice_movement'
 								style={{
 									width: "100%",
 									height: "70%",
@@ -336,7 +368,7 @@ function PlayWithPlayer() {
 									alignItems: "center",
 									justifyContent: "center",
 								}}>
-								{appState.diceAnimate ? (
+								{/* {appState.diceAnimate ? (
 									<>
 										<ReactDice
 											numDice={1}
@@ -344,15 +376,12 @@ function PlayWithPlayer() {
 											ref={diceAnimateRef}
 											disableIndividual
 											// disableRandom
-											faceColor="#fff"
-											dotColor="black"
+											faceColor='#fff'
+											dotColor='black'
 											dieSize={25}
 											rollDone={(val) => {
-												let start = localStorage.getItem("GAME_START_SNLIO");
-												if (start) {
+												if (gameStart) {
 													console.log("diceAnimateRef, dispatch(currentDice({ animate: false, dice: val }));", val);
-													// dispatch(currentDice({ animate: false, dice: val }));
-													// movePlayer(appState?.turn, val);
 												}
 											}}
 										/>
@@ -360,25 +389,26 @@ function PlayWithPlayer() {
 								) : (
 									<>
 										{appState.diceValue && appState.turn !== appState.position.player1.color ? (
-											<img
-												src={`/asset/game_play/${appState.diceValue}.png`}
-												alt=""
-												style={{ objectFit: "contain", width: "70%", height: "70%", paddingBottom: "1px" }}
-											/>
+											<img src={`/asset/game_play/${appState.diceValue}.png`} alt='' style={{ objectFit: "contain", width: "70%", height: "70%", paddingBottom: "1px" }} />
 										) : (
 											<ReactDice
 												numDice={1}
 												// rollTime={4}
-												ref={diceRef}
+												ref={dicePlayerRef}
 												disableIndividual
 												// disableRandom
-												faceColor="#fff"
-												dotColor="black"
+												faceColor='#fff'
+												dotColor='black'
 												dieSize={25}
 												rollDone={(val) => {
-													let start = localStorage.getItem("GAME_START_SNLIO");
-													if (start) {
-														console.log("diceRef,=============<dispatch(currentDice({ animate: false, dice: val }));", val);
+													if (gameStart) {
+														console.log(
+															"movePlayer(appState?.turn, val); diceRef==================>><<>,=============<dispatch(currentDice({ animate: false, dice: val }));",
+															val,
+
+															gameStart,
+															"gameStartr==============><"
+														);
 														dispatch(currentDice({ animate: false, dice: val }));
 														movePlayer(appState?.turn, val);
 													}
@@ -386,11 +416,53 @@ function PlayWithPlayer() {
 											/>
 										)}
 									</>
-								)}
+								)} */}
+
+								{/* dice rule component*/}
+								{/* <div clssName='dice'> */}
+								<div style={{ marginBlock: "10px" }}>
+									<ol className='die-list even-roll' data-roll='1' id='die-1'>
+										<li className='die-item' data-side='1'>
+											<span className='dot'></span>
+										</li>
+										<li className='die-item' data-side='2'>
+											<span className='dot'></span>
+											<span className='dot'></span>
+										</li>
+										<li className='die-item' data-side='3'>
+											<span className='dot'></span>
+											<span className='dot'></span>
+											<span className='dot'></span>
+										</li>
+										<li className='die-item' data-side='4'>
+											<span className='dot'></span>
+											<span className='dot'></span>
+											<span className='dot'></span>
+											<span className='dot'></span>
+										</li>
+										<li className='die-item' data-side='5'>
+											<span className='dot'></span>
+											<span className='dot'></span>
+											<span className='dot'></span>
+											<span className='dot'></span>
+											<span className='dot'></span>
+										</li>
+										<li className='die-item' data-side='6'>
+											<span className='dot'></span>
+											<span className='dot'></span>
+											<span className='dot'></span>
+											<span className='dot'></span>
+											<span className='dot'></span>
+											<span className='dot'></span>
+										</li>
+									</ol>
+								</div>
+								{/* </div> */}
+								{/* dice rule component*/}
 							</div>
 						</div>
-						<div className="right">
-							<div className="player-name player-name-right">{appState.op?.user_name}</div>
+						<div className='right'>
+							<div className='player-name player-name-right'>{appState.op?.user_name}</div>
 							{appState.op.id === appState.turnTime.current_player_id && appState.turnTime.life ? (
 								<div
 									style={{
@@ -407,13 +479,13 @@ function PlayWithPlayer() {
 									) : (
 										<IoMdHeart style={{ color: "#ED5AB3", fontSize: "20px" }} />
 									)}
-									<div className="turn_bar_bg">
-										<div className="turn_bar_inActive_bg">
+									<div className='turn_bar_bg'>
+										<div className='turn_bar_inActive_bg'>
 											<img
-												src="/asset/game_play/time_bar.png"
+												src='/asset/game_play/time_bar.png'
 												width={20}
 												height={30}
-												alt="loader"
+												alt='loader'
 												style={{
 													position: "absolute",
 													left: "0",
@@ -431,45 +503,43 @@ function PlayWithPlayer() {
 							) : (
 								""
 							)}
-							<div className="user-image user-right">
-								<img src={appState?.op?.profile || "/default.png"} alt="" />
+							<div className='user-image user-right'>
+								<img src={appState?.op?.profile || "/default.png"} alt='' />
 							</div>
-							<img src="/asset/game_play/right_base.png" alt="" />
+							<img src='/asset/game_play/right_base.png' alt='' />
 						</div>
 					</div>
-					<div className="gameplay-board">
+					<div className='gameplay-board'>
 						{quitGame && (
-							<div className="quit_game_bg">
-								<div className="quit_game_wrapper">
-									<div className="quit_game_text">Do You Want To Quit ?</div>
-									<div className="quit_game_btn">
+							<div className='quit_game_bg'>
+								<div className='quit_game_wrapper'>
+									<div className='quit_game_text'>Do You Want To Quit ?</div>
+									<div className='quit_game_btn'>
 										{" "}
-										<button className="yes" onClick={() => handelQuitGame()}>
+										<button className='yes' onClick={() => handelQuitGame()}>
 											Yes
 										</button>
-										<button className="no" onClick={() => setQuitGame(false)}>
+										<button className='no' onClick={() => setQuitGame(false)}>
 											No
 										</button>
 									</div>
 								</div>
 							</div>
 						)}
-						<Board
-							playerPositions={appState.position}
-							turn={appState.turn}
-							animate={appState.diceAnimate || animate}
-						/>
+						<Board playerPositions={appState.position} turn={appState.turn} animate={appState.diceAnimate || animate} />
 						<Popupbox />
 					</div>
-					<div className="roll-btn">
-						{appState.position?.player1?.color === appState?.turn && !animate ? (
-							<img src="/asset/game_play/Roll.png" alt="" onClick={() => handelRollDice()} />
-						) : (
-							<></>
-						)}
-						<p>
-							{appState.position?.player1?.color === appState?.turn && !animate ? "Your Turn" : "Opponent Turn"}
-						</p>
+					<div
+						className='roll-btn'
+						style={{
+							cursor: "pointer",
+							backgroundColor: "red",
+							pointerEvents:
+								appState.position?.player1?.color === appState?.turn && !animate && appState.status !== gameStatus.r_win && appState.status !== gameStatus.y_win ? "auto" : "none",
+						}}
+						onClick={rollDice}>
+						{appState.position?.player1?.color === appState?.turn && !animate ? <img src='/asset/game_play/Roll.png' alt='' /> : <></>}
+						<p>{appState.position?.player1?.color === appState?.turn && !animate ? "Your Turn" : "Opponent Turn"}</p>
 					</div>
 				</div>
 			</div>
