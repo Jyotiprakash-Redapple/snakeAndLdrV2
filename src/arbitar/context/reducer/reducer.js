@@ -33,6 +33,7 @@ let reducer = (state, action) => {
 		// game init when click player btn
 		case actionTypes.NEW_GAME_INIT: {
 			const gameObject = action.payload.arg;
+			console.log("GAME OBJECTS RECEIVE FROM SERVER", gameObject);
 			let gameInit = {
 				position: {
 					player1: {
@@ -203,11 +204,17 @@ let reducer = (state, action) => {
 					state.position.player2.value = action.payload.currentPosition;
 				}
 			}
-			if (state.position.player1.value > state.position.player2.value && state.position.player1.color === "r") {
+			if (
+				state.position.player1.value > state.position.player2.value &&
+				state.position.player1.color === "r"
+			) {
 				advantage = state.position.player1.value - state.position.player2.value;
 				advantageStatus = "r";
 			} else {
-				if (state.position.player1.value > state.position.player2.value && state.position.player1.color === "y") {
+				if (
+					state.position.player1.value > state.position.player2.value &&
+					state.position.player1.color === "y"
+				) {
 					advantage = state.position.player1.value - state.position.player2.value;
 					advantageStatus = "y";
 				}
@@ -222,7 +229,10 @@ let reducer = (state, action) => {
 					},
 					game_state: {
 						status: state.status,
-						advantage: advantage === 0 || state.position.player1.value === state.position.player2.value ? "Niether Side " : advantageStatus,
+						advantage:
+							advantage === 0 || state.position.player1.value === state.position.player2.value
+								? "Niether Side "
+								: advantageStatus,
 					},
 				});
 			}
@@ -243,11 +253,17 @@ let reducer = (state, action) => {
 					state.position.player2.value = action.payload.currentPosition;
 				}
 			}
-			if (state.position.player1.value > state.position.player2.value && state.position.player1.color === "r") {
+			if (
+				state.position.player1.value > state.position.player2.value &&
+				state.position.player1.color === "r"
+			) {
 				advantage = state.position.player1.value - state.position.player2.value;
 				advantageStatus = "r";
 			} else {
-				if (state.position.player1.value > state.position.player2.value && state.position.player1.color === "y") {
+				if (
+					state.position.player1.value > state.position.player2.value &&
+					state.position.player1.color === "y"
+				) {
 					advantage = state.position.player1.value - state.position.player2.value;
 					advantageStatus = "y";
 				}
@@ -262,7 +278,10 @@ let reducer = (state, action) => {
 					},
 					game_state: {
 						status: state.status,
-						advantage: advantage === 0 || state.position.player1.value === state.position.player2.value ? "Niether Side " : advantageStatus,
+						advantage:
+							advantage === 0 || state.position.player1.value === state.position.player2.value
+								? "Niether Side "
+								: advantageStatus,
 					},
 				});
 			}

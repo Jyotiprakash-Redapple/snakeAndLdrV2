@@ -11,7 +11,12 @@ import { FaHeartBroken } from "react-icons/fa";
 import Popupbox from "../../../components/popup/popupbox";
 import { snakes, ladder, generateArea, cordinate } from "../../../arbitar/helper";
 
-import { makeNewMove, dectateWin, makeAnimateMove, turnChnage } from "../../../arbitar/context/reducer/move";
+import {
+	makeNewMove,
+	dectateWin,
+	makeAnimateMove,
+	turnChnage,
+} from "../../../arbitar/context/reducer/move";
 
 import ReactDice from "react-dice-complete";
 import PawnMovementSound from "../../../audio/pawn_movement.mp3";
@@ -24,12 +29,6 @@ function getSize(width) {
 		return "xs";
 	} else if (width > 320 && width <= 380) {
 		return "sm";
-	} else if (width > 380 && width <= 390) {
-		return "md";
-	} else if (width > 390 && width <= 480) {
-		return "xl";
-	} else if (width > 480 && width <= 600) {
-		return "xxl";
 	} else {
 		return "root";
 	}
@@ -190,7 +189,6 @@ function PlayWithPlayer() {
 
 		dispatch(makeNewMove({ player_turn, currentPosition }));
 		setTimeout(() => {
-			console.log(player_turn, "player turn ===================================================>>>>>>>>>>>");
 			dispatch(turnChnage(player_turn));
 			setAnimate(false);
 		}, 1000);
@@ -199,7 +197,7 @@ function PlayWithPlayer() {
 	const animatePawn = async (turn, player, position, x, y) => {
 		return new Promise((resolve) => {
 			const pawnElement = document.getElementById(`pawn-${turn}`);
-			console.log(turn, player, position, x, y, "hello animate current <=============>pawn");
+
 			if (pawnElement) {
 				pawnElement.style.transition = "transform 0.3s ease-in-out";
 				pawnElement.style.transform = `translate(${x}px, ${y}px)`;
@@ -232,7 +230,7 @@ function PlayWithPlayer() {
 	useLayoutEffect(() => {
 		localStorage.removeItem("GAME_START_SNLIO");
 	}, []);
-	// console.log(appState, "current appp state");
+
 	/**
 	 * Global time Function
 	 */
@@ -243,6 +241,7 @@ function PlayWithPlayer() {
 			const data = await axios.get("http://3.137.86.237:5000/api/v2/game-setting?game_id=25", {
 				headers: { Authorization: `Bearer ${token}` },
 			});
+
 			let _time = data?.data?.data?.game_setting?.GAMETIME || 600;
 			setTime(_time);
 		};
@@ -265,245 +264,126 @@ function PlayWithPlayer() {
 		return () => clearInterval(intervalId);
 	}, []);
 	useEffect(() => {
+		if (appState.status === gameStatus.r_win || appState.status === gameStatus.y_win) {
+			handelQuitGame();
+		}
 		if (appState.turn === "y") {
 			handelRollDice();
-			console.log("rool dice call");
 		}
 	}, [appState.turn]);
 
-	console.log(appState.turn, "turn current turn");
 	return (
-		<main>
-			<div className='view_container'>
-				{/*<--start::play with player wrapper---->*/}
-				<div className='play_wrapper'>
-					{/*<--start::bg screen---->*/}
-					<div className='player_bg'>
-						{/*<--start::timer back ---->*/}
+		<main className="game_body">
+			<div className="gameplay_box">
+				<div className="game_bg">
+					<img src="/asset/game_play/bg.png" alt="" />
+					<div className="top-area">
+						<div className="time">{moment.utc(time * 1000).format("mm:ss")} </div>
+						<div className="top-control">
+							<div className="back">
+								<img src="/asset/game_play/back.png" alt="back" onClick={() => setQuitGame(true)} />
+							</div>
+							<div className="sound">
+								{soundStatus && (
+									<img
+										src="/asset/game_play/sound_on.png"
+										alt="sound"
+										onClick={() => setSoundStatus(!soundStatus)}
+									/>
+								)}
+								{!soundStatus && (
+									<img
+										src="/asset/game_play/sound_off.png"
+										alt="sound"
+										onClick={() => setSoundStatus(!soundStatus)}
+									/>
+								)}
+							</div>
+						</div>
+					</div>
+					<div className="player-info-area">
+						<div className="left">
+							<div className="player-name player-name-left">{appState.pl?.user_name || "TEST"}</div>
 
-						<span className='global_timer'>
-							<strong
+							<div className="user-image user-left">
+								<img src={appState?.pl?.profile || "/default.png"} alt="" />
+							</div>
+							<img src="/asset/game_play/Left_base.png" alt="" />
+						</div>
+						<div className="center">
+							<img src="/asset/game_play/dise_base.png" alt="" />
+							<div
+								className="dice_movement"
 								style={{
-									color: "#FFF",
+									width: "100%",
+									height: "70%",
+									cursor: "pointer",
+									position: "absolute",
+									top: "10px",
+									letf: 0,
+									zIndex: 100,
+									display: "flex",
+									alignItems: "center",
+									justifyContent: "center",
 								}}>
-								{moment.utc(time * 1000).format("mm:ss")}
-							</strong>
-						</span>
-						<span className='quit_game' onClick={() => setQuitGame(true)}></span>
-						<span
-							className={`sound_game ${soundStatus ? "on" : "off"} `}
-							onClick={() => {
-								setSoundStatus(!soundStatus);
-							}}></span>
-						<span className='pawn_click'>
-							<div className='role'>
-								<span
-									className={`role_btn ${appState.position?.player1?.color === appState?.turn && !animate ? "active" : ""}`}
-									style={{
-										pointerEvents:
-											appState.position?.player1?.color === appState?.turn && !animate && appState.status !== gameStatus.r_win && appState.status !== gameStatus.y_win ? "auto" : "none",
+								<ReactDice
+									numDice={1}
+									rollTime={4}
+									ref={diceRef}
+									disableIndividual
+									// disableRandom
+									faceColor="#fff"
+									dotColor="black"
+									dieSize={25}
+									rollDone={(val) => {
+										let start = localStorage.getItem("GAME_START_SNLIO");
+										if (start) {
+											movePlayer(appState?.turn, val);
+										}
 									}}
-									onClick={handelRollDice}></span>
+								/>
 							</div>
-							<div className='turn_role_text'>
-								<strong
-									style={{
-										color: "#FFF",
-									}}>
-									{appState.position?.player1?.color === appState?.turn && !animate ? "Your Turn" : "Opponent Turn"}
-								</strong>
+						</div>
+						<div className="right">
+							<div className="player-name player-name-right">{"AI"}</div>
+
+							<div className="user-image user-right">
+								<img src={appState?.op?.profile || "/default.png"} alt="" />
 							</div>
-						</span>
-						{/*<--start::timer back ---->*/}
+							<img src="/asset/game_play/right_base.png" alt="" />
+						</div>
+					</div>
+					<div className="gameplay-board">
 						{quitGame && (
-							<div className='quit_game_bg'>
-								<div className='quit_game_wrapper'>
-									<div className='quit_game_text'>Do You Want To Quit ?</div>
-									<div className='quit_game_btn'>
+							<div className="quit_game_bg">
+								<div className="quit_game_wrapper">
+									<div className="quit_game_text">Do You Want To Quit ?</div>
+									<div className="quit_game_btn">
 										{" "}
-										<button className='yes' onClick={() => handelQuitGame()}>
+										<button className="yes" onClick={() => handelQuitGame()}>
 											Yes
 										</button>
-										<button className='no' onClick={() => setQuitGame(false)}>
+										<button className="no" onClick={() => setQuitGame(false)}>
 											No
 										</button>
 									</div>
 								</div>
 							</div>
 						)}
-						<div className='inner_wrapper'>
-							<div className='top_sesc'>
-								<div className='left_base'>
-									<div className='player_name'>
-										<div className='name'>
-											<p
-												style={{
-													color: "#fff",
-													fontSize: "10px",
-													whiteSpace: "nowrap",
-													width: "60%",
-													overflow: "hidden",
-													textAlign: "center",
-													textOverflow: "ellipsis",
-												}}>
-												Test 1
-											</p>
-										</div>
-
-										{/* {appState?.pl.id === appState.turnTime.current_player_id && appState.turnTime.life ? (
-											<>
-												<div style={{ position: "absolute", top: "-8px", left: 0 }}>
-													{appState?.pl?.id === appState.turnTime.current_player_id && !appState.turnTime.life ? (
-														<FaHeartBroken style={{ color: "#ED5AB3", fontSize: "23px" }} />
-													) : (
-														<IoMdHeart style={{ color: "#ED5AB3", fontSize: "23px" }} />
-													)}
-												</div>
-												<div className='turn_bar_bg'>
-													<div className='turn_bar_inActive_bg'>
-														<img
-															src='/game_play/time_bar.png'
-															width={20}
-															height={30}
-															alt='loader'
-															style={{
-																height: "7px",
-																width: `${updateProgressBar(appState.turnTime.counter)}%`,
-																objectFit: "cover",
-
-																borderRadius: "10px",
-															}}
-														/>
-													</div>
-												</div>
-											</>
-										) : (
-											<>
-												{" "}
-												<div className='turn_bar_bg'></div>
-											</>
-										)} */}
-									</div>
-									<div className='player_profile'>
-										<img
-											src={`${appState?.pl?.profile || "/default.png"}`}
-											style={{
-												objectFit: "contain",
-												width: "90%",
-												height: "100%",
-												borderRadius: "10px",
-											}}></img>
-									</div>
-								</div>
-								<div className='dise_base'>
-									{" "}
-									<div
-										className='dice_movement'
-										style={{
-											cursor: "pointer",
-											position: "relative",
-
-											display: "flex",
-											alignItems: "center",
-											justifyContent: "center",
-										}}>
-										<ReactDice
-											numDice={1}
-											rollTime={1}
-											ref={diceRef}
-											disableIndividual
-											// disableRandom
-											faceColor={appState.turn === "r" ? "radial-gradient(rgb(255, 60, 60), rgb(180, 0, 0))" : "radial-gradient(rgb(0 202 235), rgb(0 145 180))"}
-											dotColor='#fff'
-											dieSize={20}
-											rollDone={(val) => {
-												let start = localStorage.getItem("GAME_START_SNLIO");
-												if (start) {
-													movePlayer(appState?.turn, val);
-												}
-											}}
-										/>
-									</div>
-								</div>
-								<div className='right_base'>
-									<div className='player_profile' style={{ marginLeft: "7px" }}>
-										<img
-											src={`${appState?.op?.profile || "/default.png"}`}
-											style={{
-												objectFit: "contain",
-												width: "90%",
-												height: "100%",
-												borderRadius: "10px",
-											}}></img>
-									</div>
-
-									<div className='player_name'>
-										<div className='name'>
-											<p
-												style={{
-													color: "#fff",
-													fontSize: "10px",
-													whiteSpace: "nowrap",
-													width: "60%",
-													overflow: "hidden",
-													textAlign: "center",
-													textOverflow: "ellipsis",
-												}}>
-												AI BOT
-											</p>
-										</div>
-
-										{/* {appState.op.id === appState.turnTime.current_player_id && appState.turnTime.life ? (
-											<>
-												<div
-													style={{
-														position: "absolute",
-														top: "-8px",
-														right: 0,
-													}}>
-													{appState.pl.id === appState.turnTime.current_player_id && !appState.turnTime.life ? (
-														<FaHeartBroken style={{ color: "#ED5AB3", fontSize: "23px" }} />
-													) : (
-														<IoMdHeart style={{ color: "#ED5AB3", fontSize: "23px" }} />
-													)}
-												</div>
-												<div className='turn_bar_bg'>
-													<div className='turn_bar_inActive_bg'>
-														<img
-															src='/game_play/time_bar.png'
-															width={20}
-															height={30}
-															alt='loader'
-															style={{
-																height: "7px",
-																width: `${updateProgressBar(appState.turnTime.counter)}%`,
-																objectFit: "cover",
-
-																borderRadius: "10px",
-															}}
-														/>
-													</div>
-												</div>{" "}
-											</>
-										) : (
-											<>
-												<div className='turn_bar_bg'></div>
-											</>
-										)} */}
-									</div>
-								</div>
-							</div>
-							<div className='btm_sesc'>
-								<div className='gameBoard'>
-									<Board playerPositions={appState.position} turn={appState.turn} />
-									<Popupbox />
-								</div>
-							</div>
-						</div>
+						<Board playerPositions={appState.position} turn={appState.turn} animate={animate} />
+						<Popupbox />
 					</div>
-					{/*<--end::bg screen---->*/}
+					<div className="roll-btn">
+						{appState.position?.player1?.color === appState?.turn && !animate ? (
+							<img src="/asset/game_play/Roll.png" alt="" onClick={() => handelRollDice()} />
+						) : (
+							<></>
+						)}
+						<p>
+							{appState.position?.player1?.color === appState?.turn && !animate ? "Your Turn" : "Opponent Turn"}
+						</p>
+					</div>
 				</div>
-				{/*<--end::play with player wrapper---->*/}
 			</div>
 		</main>
 	);

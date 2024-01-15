@@ -2,7 +2,6 @@
 	width: 50%;
 	height: 100%;
 	position: relative;
-	/* background-color: red; */
 }
 .player_wrapper {
 	width: 190px;
@@ -24,14 +23,12 @@
 	margin-top: 33px;
 	position: relative;
 	display: flex;
-	/* align-items: center; */
-	/* justify-content: center; */
 }
 .image_wrapper {
 	margin-top: 10px;
 	width: 100px;
 	height: 107px;
-	margin-left: -1px;
+	margin-left: 45px;
 	background-image: url("/public/asset/match_make/player_base.png");
 	background-size: contain;
 	background-repeat: no-repeat;

@@ -3,7 +3,7 @@ import Square from "../square";
 import SnakeAndLdr from "../snakeAndLadder";
 import { initBoardPosition } from "../../arbitar/helper";
 import Pawn from "../pawn";
-function board({ playerPositions, turn }) {
+function board({ playerPositions, turn, animate }) {
 	const renderSquares = () => {
 		const squares = [];
 		for (let i = 0; i < initBoardPosition.length; i++) {
@@ -27,14 +27,25 @@ function board({ playerPositions, turn }) {
 
 	return (
 		<>
-			<div className='grid-main'>
+			<div className="grid-main">
 				<SnakeAndLdr />
-				<div className='board-grid'>{renderSquares()}</div>
+				<div className="board-grid">
+					{renderSquares()}
+					<Pawn
+						position={playerPositions.player1.value}
+						parent_position={playerPositions}
+						player={playerPositions.player1.color}
+						animate={animate}
+					/>
+					<Pawn
+						position={playerPositions.player2.value}
+						parent_position={playerPositions}
+						player={playerPositions.player2.color}
+						animate={animate}
+					/>
+				</div>
 			</div>
-			<img src='/asset/game_play/gameBoard.png' alt='' />
-
-			<Pawn position={playerPositions.player1.value} parent_position={playerPositions} player={playerPositions.player1.color} />
-			<Pawn position={playerPositions.player2.value} parent_position={playerPositions} player={playerPositions.player2.color} />
+			<img src="/asset/game_play/gameBoard.png" alt="" />
 		</>
 	);
 }

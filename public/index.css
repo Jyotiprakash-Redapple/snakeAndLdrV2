@@ -131,6 +131,7 @@
 .center,
 .right {
 	position: relative;
+	/* background-color: red; */
 }
 .user-image {
 	position: absolute;
@@ -192,8 +193,8 @@
 	box-sizing: border-box;
 }
 .board-grid {
-	width: 100%;
-	height: 100%;
+	width: 99%;
+	height: 97%;
 	display: grid;
 	grid-template-columns: repeat(10, var(--tile-size));
 	grid-template-rows: repeat(10, var(--tile-size));
@@ -206,7 +207,7 @@
 	justify-content: center;
 	color: transparent;
 	font-weight: 600;
-	border: 1px solid #f00;
+	/* border: 1px solid #f00; */
 }
 .roll-btn {
 	position: absolute;
@@ -309,283 +310,28 @@
 	top: 23px;
 	right: 49px;
 }
-/* .player_bg {
-	position: relative;
-	width: 100%;
-	height: 100%;
-	max-height: 690px;
-	background-image: url("/asset/game_play/bg.png");
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-.global_timer {
-	width: 100%;
-	height: 20px;
-	font-size: 13px;
-	position: absolute;
-	/* top: 23px; */
-/* top: 19px;
-	left: 0;
-
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-.quit_game {
-	width: 30px;
-	height: 30px;
-	background-image: url("/asset/game_play/back.png");
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: contain;
-	position: absolute;
-	/* top: 65px;
-  left: 7px; */
-/* top: 55px;
-	left: 5px; */
-/* } */
-/* .sound_game {
-	width: 30px;
-	height: 30px;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: contain;
-	position: absolute;
-	/* top: 65px;
-  right: 7px; */
-/* top: 55px;
-	right: 5px;
-} */
-
-/* .sound_game.on {
-	background-image: url("/asset/game_play/sound_on.png");
-}
-.sound_game.off {
-	background-image: url("/asset/game_play/sound_off.png");
-} */
-
-/* .pawn_click {
-	position: absolute;
-	width: 130px;
-	height: 70px;
-
-	bottom: -1px;
-	left: 33%;
-	transform: translate(-0%, -50%);
-
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-}
-.pawn_click > .role {
-	width: 100%;
-	height: 40px;
-
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-.pawn_click > div > .role_btn {
-	width: 150px;
-	height: 30px;
-	background-image: url("/asset/game_play/Roll.png");
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: contain;
-	transition: 1s ease-in-out;
-	cursor: pointer;
-}
-
-.pawn_click > div > .role_btn.active:hover {
-	transform: scale(1.4);
-} */
-
-/* .player_bg > .inner_wrapper {
+.turn_bar_bg {
 	width: 90%;
-	height: 65%;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: space-around;
-	position: relative;
-}
-
-.player_bg > .inner_wrapper > .top_sesc {
-	width: 100%;
-	height: 60px;
-
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-} */
-
-/* .player_bg > .inner_wrapper > .btm_sesc {
-	width: 100%;
-	height: 80%; */
-/* background-color: #72d0ff; */
-/* }
-
-.player_bg > .inner_wrapper > .top_sesc > .left_base {
-	height: 100%;
-	width: 120px;
-
-	background-image: url("/asset/game_play/Left_base.png");
-	background-repeat: no-repeat;
-	background-size: contain;
-
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-}
-.player_bg > .inner_wrapper > .top_sesc > .left_base > .player_name,
-.player_bg > .inner_wrapper > .top_sesc > .right_base > .player_name {
-	width: 68%;
-	height: 50%;
-	position: relative;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-}
-.player_bg > .inner_wrapper > .top_sesc > .left_base > .player_name > .name,
-.player_bg > .inner_wrapper > .top_sesc > .right_base > .player_name > .name {
-	width: 100%;
-	height: 30%;
-
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-.player_bg > .inner_wrapper > .top_sesc > .left_base > .player_name > .turn_bar_bg,
-.player_bg > .inner_wrapper > .top_sesc > .right_base > .player_name > .turn_bar_bg {
-	width: 100%;
 	height: 90%;
 	display: flex;
 	align-items: center;
-	justify-content: center;
-} */
+	justify-content: flex-start;
 
-/* .player_bg > .inner_wrapper > .top_sesc > .left_base > .player_name > .turn_bar_bg > .turn_bar_inActive_bg,
-.player_bg > .inner_wrapper > .top_sesc > .right_base > .player_name > .turn_bar_bg > .turn_bar_inActive_bg {
-	width: 80%;
+	position: relative;
+}
+.turn_bar_inActive_bg {
+	position: absolute;
+	left: 0;
+	width: 60%;
 	height: 7px;
 	display: flex;
-	align-items: center;
+	align-items: flex-start;
 	justify-content: flex-start;
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: contain;
 	background-image: url("./asset/game_play/time_base.png");
 }
-.player_bg > .inner_wrapper > .top_sesc > .left_base > .player_profile,
-.player_bg > .inner_wrapper > .top_sesc > .right_base > .player_profile {
-	width: 20%;
-	height: 47%;
-	margin-bottom: 2px;
-	margin-right: 7px;
-	background-image: url("./asset/game_play/profile_rc.png");
-	background-repeat: no-repeat;
-	background-size: contain;
-} */
-
-/* .player_bg > .inner_wrapper > .top_sesc > .right_base {
-	height: 100%;
-	width: 120px;
-
-	background-image: url("./asset/game_play/right_base.png");
-	background-repeat: no-repeat;
-	background-size: contain;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-}
-
-.player_bg > .inner_wrapper > .top_sesc > .dise_base {
-	height: 80%;
-	width: 60px;
-	background-image: url("./asset/game_play/dise_base.png");
-	background-repeat: no-repeat;
-	background-size: contain;
-
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}  */
-
-/*====================================Game Board Component=========================*/
-/* .gameBoard {
-	width: 100%;
-	height: 100%;
-	position: relative;
-	display: flex;
-	/* background-color: #000; */
-/* align-items: center;
-	justify-content: center;
-} */
-/* .game_board_img { */
-/* width: 372px;
-	height: 372px; */
-/* width: 350px;
-  height: 350px; */
-/* width: 100%;
-	height: 100%;
-	position: absolute;
-	left: 0;
-	top: 0;
-	background-size: cover;
-} */
-/* .snakeLdr {
-	z-index: 10;
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	left: 0;
-	top: 0;
-	display: grid;
-	grid-template-columns: repeat(10, var(--tile-size));
-	grid-template-rows: repeat(10, var(--tile-size));
-	transition: all 0.3s ease-in-out;
-} */
-/* .board_temp {
-	position: relative;
-	display: grid;
-	grid-template-columns: repeat(10, var(--tile-size));
-	grid-template-rows: repeat(10, var(--tile-size));
-	transition: all 0.3s ease-in-out; */
-/* margin-bottom: 13px;
-  margin-right: 1px; */
-/* background-color: #fff; */
-/* width: 99%;
-	height: 99%; */
-/* top: 0;
-  left: 0; */
-/* top: 12px;
-	left: 8px; */
-/* top: 0;
-  left: 0; */
-/* } */
-
-/* .square {
-	width: var(--tile-size);
-	height: var(--tile-size);
-
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-wrap: wrap;
-	position: relative;
-	transition: all 0.3s ease-in-out;
-}
-.square.multiplayer {
-	display: flex;
-	flex-direction: row;
-} */
 
 /**********************************Player Position Color **************************/
 .player {
@@ -719,7 +465,7 @@
 	height: 100%;
 	top: 0;
 	left: 0;
-	z-index: 1000;
+	z-index: 300;
 	position: absolute;
 	background-image: url("/asset/quit_game/layer.png");
 	background-size: cover;
